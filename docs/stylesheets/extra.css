@@ -6,7 +6,7 @@
     --md-accent-fg-color: #5E81AC;    /* aqua */
     --md-default-bg-color: #ECEFF4;   /* ice gray */
   }
-  
+
   /* Headings for crisp modern feel */
   .md-typeset h1,
   .md-typeset h2,
@@ -15,7 +15,7 @@
     letter-spacing: -0.02em;
     color: #2E3440;
   }
-  
+
   /* Links with aqua accent */
   .md-typeset a {
     color: #5E81AC;
@@ -24,19 +24,19 @@
     text-decoration: underline;
     color: #2E3440;
   }
-  
+
   /* Navigation bar */
   .md-header {
     background-color: #2E3440 !important;
     color: #ECEFF4 !important;
   }
-  
+
   /* Active tab highlighting */
   .md-tabs__item--active > a {
     color: #5E81AC !important;
     font-weight: 600;
   }
-  
+
   /* Footer background */
   .md-footer {
     background-color: #ECEFF4 !important;
@@ -56,12 +56,12 @@
     padding: 12px;
     color: #2E3440;
   }
-  
+
   /* Links and arrows */
   .mermaid .edgePath path {
     stroke: #5E81AC !important;
   }
-  
+
   .mermaid .node rect,
   .mermaid .node circle {
     stroke: #2E3440;
