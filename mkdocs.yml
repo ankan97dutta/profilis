@@ -57,6 +57,9 @@ nav:
       - FastAPI: adapters/fastapi.md
   - Databases:
       - SQLAlchemy: databases/sqlalchemy.md
+      - MongoDB: databases/mongodb.md
+      - Neo4j: databases/neo4j.md
+      - pyodbc: databases/pyodbc.md
   - Exporters:
       - JSONL: exporters/jsonl.md
   - UI:

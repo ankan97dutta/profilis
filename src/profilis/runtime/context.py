@@ -11,6 +11,7 @@ from contextlib import contextmanager
 from contextvars import ContextVar, Token
 
 __all__ = [
+    "get_current_parent_span_id",
     "get_span_id",
     "get_trace_id",
     "reset_span_id",
@@ -75,3 +76,17 @@ def use_span(trace_id: str | None = None, span_id: str | None = None) -> Iterato
             reset_span_id(stoken)
         if ttoken is not None:
             reset_trace_id(ttoken)
+
+
+def get_current_parent_span_id() -> str | None:
+    """
+    Return the current span id (preferred) or trace id as a fallback.
+
+    Rationale:
+      - Adapters that need to link DB events to traces can call this single, dependency-free helper.
+      - This centralizes span/trace access and keeps telemetry plumbing testable.
+    """
+    span = get_span_id()
+    if span:
+        return span
+    return get_trace_id()

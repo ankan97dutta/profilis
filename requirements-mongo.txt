@@ -1,0 +1,16 @@
+.# Profilis MongoDB Dependencies
+# Install with: pip install -r requirements-mongo.txt
+# This includes MongoDB profiling support via PyMongo and Motor
+
+# Core dependencies (always required)
+typing_extensions>=4.0
+
+# MongoDB support
+pymongo>=4.3
+motor>=3.3
+
+# Note: This setup supports MongoDB profiling with both sync (PyMongo) and async (Motor) clients
+# For additional integrations, use:
+# - requirements-flask.txt for Flask support
+# - requirements-sqlalchemy.txt for database profiling
+# - requirements-all.txt for everything
