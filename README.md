@@ -20,6 +20,11 @@ Profilis provides drop-in observability across APIs, functions, and database que
 
 <img width="1126" height="642" alt="Screenshot 2025-09-01 at 12 38 50 PM" src="https://github.com/user-attachments/assets/7c9d541b-4984-4575-92fb-8c0ec48dff55" />
 
+## ⭐ Star This Repository
+
+If you find Profilis helpful for your projects, please consider giving it a star! It helps others discover this tool and motivates continued development.
+
+[![GitHub stars](https://img.shields.io/github/stars/ankan97dutta/profilis?style=social)](https://github.com/ankan97dutta/profilis)
 
 ## Features
 
@@ -336,3 +341,12 @@ See [Profilis – v0 Roadmap Project](https://github.com/ankan97dutta/profilis/p
 ## License
 
 [MIT](./LICENSE)
+
+## Contact
+
+- **Email**: [connect@ankandutta.in](mailto:connect@ankandutta.in)
+- **Website**: [https://www.ankandutta.in](https://www.ankandutta.in)
+- **Bogs**: [Signals & Noise](https://blog.ankandutta.in/)
+- **GitHub**: [@ankan97dutta](https://github.com/ankan97dutta)
+
+Feel free to reach out if you have questions, suggestions, or would like to contribute to Profilis!
