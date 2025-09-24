@@ -18,7 +18,7 @@ collector = AsyncCollector(exporter, queue_size=2048, batch_max=128, flush_inter
 app = Flask(__name__)
 
 # Integrate Profilis
-profilis = ProfilisFlask(
+ProfilisFlask(
     app,
     collector=collector,
     exclude_routes=["/health", "/metrics"],
@@ -65,7 +65,7 @@ profilis = ProfilisFlask(
 
 ```python
 # Production configuration with sampling
-profilis = ProfilisFlask(
+ProfilisFlask(
     app,
     collector=collector,
     exclude_routes=[
@@ -136,7 +136,7 @@ app = Flask(__name__)
 stats = StatsStore()
 
 # Setup Profilis profiling
-profilis = ProfilisFlask(app, collector=collector)
+ProfilisFlask(app, collector=collector)
 
 # Add dashboard
 ui_bp = make_ui_blueprint(stats, ui_prefix="/_profilis")
@@ -347,6 +347,10 @@ collector = AsyncCollector(exporter)
 profilis = ProfilisFlask(app, collector=collector)
 
 # Add UI separately if needed
+from profilis.flask.ui import make_ui_blueprint
+from profilis.core.stats import StatsStore
+
+stats = StatsStore()
 ui_bp = make_ui_blueprint(stats, ui_prefix="/_profilis")
 app.register_blueprint(ui_bp)
 ```

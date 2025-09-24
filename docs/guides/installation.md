@@ -33,9 +33,9 @@ pip install profilis[all]
 - `fastapi`: FastAPI framework integration (planned for v0.3.0)
 - `sanic`: Sanic framework integration (planned for v0.3.0)
 - `sqlalchemy`: SQLAlchemy database instrumentation
-- `pyodbc`: pyodbc database instrumentation (planned for v0.2.0)
-- `mongo`: MongoDB integration (planned for v0.2.0)
-- `neo4j`: Neo4j integration (planned for v0.2.0)
+- `mongo`: MongoDB integration with PyMongo
+- `neo4j`: Neo4j graph database integration
+- `pyodbc`: pyodbc database instrumentation with raw cursor wrapper
 - `perf`: Performance optimization with orjson
 - `all`: All available integrations
 - `dev`: Development dependencies
@@ -54,6 +54,9 @@ pip install -r requirements-flask.txt
 # SQLAlchemy integration
 pip install -r requirements-sqlalchemy.txt
 
+# MongoDB integration
+pip install -r requirements-mongo.txt
+
 # All integrations
 pip install -r requirements-all.txt
 ```
@@ -71,6 +74,15 @@ pip install flask[async]>=3.0
 
 # SQLAlchemy support
 pip install sqlalchemy>=2.0 aiosqlite greenlet
+
+# MongoDB support
+pip install pymongo>=4.3 motor>=3.3
+
+# Neo4j support
+pip install neo4j>=5.14
+
+# pyodbc support
+pip install pyodbc
 
 # Performance optimization
 pip install orjson>=3.8
@@ -121,6 +133,52 @@ pip install orjson>=3.8
 - Performance metrics
 
 **Use Case:** Applications using SQLAlchemy
+
+### MongoDB Integration (`pip install profilis[mongo]`)
+
+**Dependencies:**
+- Core dependencies
+- `pymongo>=4.3`
+- `motor>=3.3`
+
+**Features:**
+- Everything from core
+- Automatic MongoDB command profiling
+- PyMongo and Motor support
+- Command statistics extraction
+- Error tracking and analysis
+
+**Use Case:** Applications using MongoDB
+
+### Neo4j Integration (`pip install profilis[neo4j]`)
+
+**Dependencies:**
+- Core dependencies
+- `neo4j>=5.14`
+
+**Features:**
+- Everything from core
+- Automatic Neo4j query profiling
+- Session and transaction monitoring
+- Cypher query analysis
+- Graph metrics extraction
+
+**Use Case:** Applications using Neo4j graph database
+
+### pyodbc Integration (`pip install profilis[pyodbc]`)
+
+**Dependencies:**
+- Core dependencies
+- `pyodbc`
+
+**Features:**
+- Everything from core
+- Automatic pyodbc cursor profiling
+- Raw cursor wrapper for execute/executemany operations
+- SQL monitoring with parameter redaction
+- Multi-vendor database support
+
+**Use Case:** Applications using pyodbc with ODBC-compatible databases
 
 ### Performance Optimization (`pip install profilis[perf]`)
 
