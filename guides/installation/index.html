@@ -1,0 +1,2140 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../configuration/">
+      
+      
+        <link rel="next" href="../../adapters/flask/">
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Installation - Profilis</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#installation-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Profilis" class="md-header__button md-logo" aria-label="Profilis" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Profilis
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Installation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ankan97dutta/profilis" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../overview/problem-statement/" class="md-tabs__link">
+          
+  
+  
+  Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../getting-started/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../adapters/flask/" class="md-tabs__link">
+          
+  
+  
+  Adapters
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../databases/sqlalchemy/" class="md-tabs__link">
+          
+  
+  
+  Databases
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../exporters/jsonl/" class="md-tabs__link">
+          
+  
+  
+  Exporters
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ui/ui/" class="md-tabs__link">
+          
+  
+  
+  UI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../meta/contributing/" class="md-tabs__link">
+          
+  
+  
+  Meta
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Profilis" class="md-nav__button md-logo" aria-label="Profilis" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    Profilis
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ankan97dutta/profilis" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/problem-statement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Roadmap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-using-pip-with-extras-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 1: Using pip with extras (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-using-requirements-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 2: Using requirements files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-3-manual-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 3: Manual installation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-each-installation-provides" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Each Installation Provides
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Each Installation Provides">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-package-pip-install-profilis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Package (pip install profilis)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flask-integration-pip-install-profilisflask" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flask Integration (pip install profilis[flask])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sqlalchemy-integration-pip-install-profilissqlalchemy" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQLAlchemy Integration (pip install profilis[sqlalchemy])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mongodb-integration-pip-install-profilismongo" class="md-nav__link">
+    <span class="md-ellipsis">
+      MongoDB Integration (pip install profilis[mongo])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neo4j-integration-pip-install-profilisneo4j" class="md-nav__link">
+    <span class="md-ellipsis">
+      Neo4j Integration (pip install profilis[neo4j])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyodbc-integration-pip-install-profilispyodbc" class="md-nav__link">
+    <span class="md-ellipsis">
+      pyodbc Integration (pip install profilis[pyodbc])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-optimization-pip-install-profilisperf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Optimization (pip install profilis[perf])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all-integrations-pip-install-profilisall" class="md-nav__link">
+    <span class="md-ellipsis">
+      All Integrations (pip install profilis[all])
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#virtual-environment-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Environment Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependency Resolution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-specific-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform-Specific Notes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform-Specific Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      macOS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linux
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Adapters
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Adapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/flask/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Flask
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/fastapi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FastAPI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Databases
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Databases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../databases/sqlalchemy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SQLAlchemy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../databases/mongodb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MongoDB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../databases/neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Neo4j
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../databases/pyodbc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    pyodbc
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Exporters
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Exporters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../exporters/jsonl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    JSONL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    UI
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            UI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ui/ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    UI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Meta
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Meta
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meta/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meta/development-guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dev guidelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meta/code-of-conduct/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code of Conduct
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-using-pip-with-extras-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 1: Using pip with extras (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-using-requirements-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 2: Using requirements files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-3-manual-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 3: Manual installation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-each-installation-provides" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Each Installation Provides
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Each Installation Provides">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-package-pip-install-profilis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Package (pip install profilis)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flask-integration-pip-install-profilisflask" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flask Integration (pip install profilis[flask])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sqlalchemy-integration-pip-install-profilissqlalchemy" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQLAlchemy Integration (pip install profilis[sqlalchemy])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mongodb-integration-pip-install-profilismongo" class="md-nav__link">
+    <span class="md-ellipsis">
+      MongoDB Integration (pip install profilis[mongo])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neo4j-integration-pip-install-profilisneo4j" class="md-nav__link">
+    <span class="md-ellipsis">
+      Neo4j Integration (pip install profilis[neo4j])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyodbc-integration-pip-install-profilispyodbc" class="md-nav__link">
+    <span class="md-ellipsis">
+      pyodbc Integration (pip install profilis[pyodbc])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-optimization-pip-install-profilisperf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Optimization (pip install profilis[perf])
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all-integrations-pip-install-profilisall" class="md-nav__link">
+    <span class="md-ellipsis">
+      All Integrations (pip install profilis[all])
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#virtual-environment-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Environment Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependency Resolution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-specific-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform-Specific Notes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform-Specific Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      macOS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linux
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="installation-guide">Installation Guide<a class="headerlink" href="#installation-guide" title="Permanent link">&para;</a></h1>
+<p>This guide covers all the different ways to install Profilis and what each installation option provides.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Python</strong>: 3.9 or higher</li>
+<li><strong>pip</strong>: Latest version recommended</li>
+<li><strong>Virtual Environment</strong>: Recommended for isolation</li>
+</ul>
+<h2 id="installation-methods">Installation Methods<a class="headerlink" href="#installation-methods" title="Permanent link">&para;</a></h2>
+<h3 id="method-1-using-pip-with-extras-recommended">Method 1: Using pip with extras (Recommended)<a class="headerlink" href="#method-1-using-pip-with-extras-recommended" title="Permanent link">&para;</a></h3>
+<p>This is the most flexible and recommended approach:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Core package only</span>
+pip<span class="w"> </span>install<span class="w"> </span>profilis
+
+<span class="c1"># With Flask support</span>
+pip<span class="w"> </span>install<span class="w"> </span>profilis<span class="o">[</span>flask<span class="o">]</span>
+
+<span class="c1"># With database support</span>
+pip<span class="w"> </span>install<span class="w"> </span>profilis<span class="o">[</span>flask,sqlalchemy<span class="o">]</span>
+
+<span class="c1"># With all integrations</span>
+pip<span class="w"> </span>install<span class="w"> </span>profilis<span class="o">[</span>all<span class="o">]</span>
+</code></pre></div>
+<p><strong>Available Extras:</strong>
+- <code>flask</code>: Flask framework integration
+- <code>fastapi</code>: FastAPI framework integration (planned for v0.3.0)
+- <code>sanic</code>: Sanic framework integration (planned for v0.3.0)
+- <code>sqlalchemy</code>: SQLAlchemy database instrumentation
+- <code>mongo</code>: MongoDB integration with PyMongo
+- <code>neo4j</code>: Neo4j graph database integration
+- <code>pyodbc</code>: pyodbc database instrumentation with raw cursor wrapper
+- <code>perf</code>: Performance optimization with orjson
+- <code>all</code>: All available integrations
+- <code>dev</code>: Development dependencies</p>
+<h3 id="method-2-using-requirements-files">Method 2: Using requirements files<a class="headerlink" href="#method-2-using-requirements-files" title="Permanent link">&para;</a></h3>
+<p>For users who prefer requirements files:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Minimal setup (core only)</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-minimal.txt
+
+<span class="c1"># Flask integration</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-flask.txt
+
+<span class="c1"># SQLAlchemy integration</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-sqlalchemy.txt
+
+<span class="c1"># MongoDB integration</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-mongo.txt
+
+<span class="c1"># All integrations</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-all.txt
+</code></pre></div>
+<h3 id="method-3-manual-installation">Method 3: Manual installation<a class="headerlink" href="#method-3-manual-installation" title="Permanent link">&para;</a></h3>
+<p>For complete control over dependencies:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Core dependencies</span>
+pip<span class="w"> </span>install<span class="w"> </span>typing_extensions&gt;<span class="o">=</span><span class="m">4</span>.0
+
+<span class="c1"># Flask support</span>
+pip<span class="w"> </span>install<span class="w"> </span>flask<span class="o">[</span>async<span class="o">]</span>&gt;<span class="o">=</span><span class="m">3</span>.0
+
+<span class="c1"># SQLAlchemy support</span>
+pip<span class="w"> </span>install<span class="w"> </span>sqlalchemy&gt;<span class="o">=</span><span class="m">2</span>.0<span class="w"> </span>aiosqlite<span class="w"> </span>greenlet
+
+<span class="c1"># MongoDB support</span>
+pip<span class="w"> </span>install<span class="w"> </span>pymongo&gt;<span class="o">=</span><span class="m">4</span>.3<span class="w"> </span>motor&gt;<span class="o">=</span><span class="m">3</span>.3
+
+<span class="c1"># Neo4j support</span>
+pip<span class="w"> </span>install<span class="w"> </span>neo4j&gt;<span class="o">=</span><span class="m">5</span>.14
+
+<span class="c1"># pyodbc support</span>
+pip<span class="w"> </span>install<span class="w"> </span>pyodbc
+
+<span class="c1"># Performance optimization</span>
+pip<span class="w"> </span>install<span class="w"> </span>orjson&gt;<span class="o">=</span><span class="m">3</span>.8
+</code></pre></div>
+<h2 id="what-each-installation-provides">What Each Installation Provides<a class="headerlink" href="#what-each-installation-provides" title="Permanent link">&para;</a></h2>
+<h3 id="core-package-pip-install-profilis">Core Package (<code>pip install profilis</code>)<a class="headerlink" href="#core-package-pip-install-profilis" title="Permanent link">&para;</a></h3>
+<p><strong>Dependencies:</strong>
+- <code>typing_extensions&gt;=4.0</code></p>
+<p><strong>Features:</strong>
+- AsyncCollector for non-blocking event collection
+- Emitter for high-performance event creation
+- Runtime context management
+- Basic exporters (JSONL, Console)
+- Function profiling decorator</p>
+<p><strong>Use Case:</strong> Basic profiling without framework integration</p>
+<h3 id="flask-integration-pip-install-profilisflask">Flask Integration (<code>pip install profilis[flask]</code>)<a class="headerlink" href="#flask-integration-pip-install-profilisflask" title="Permanent link">&para;</a></h3>
+<p><strong>Dependencies:</strong>
+- Core dependencies
+- <code>flask[async]&gt;=3.0</code></p>
+<p><strong>Features:</strong>
+- Everything from core
+- Automatic Flask request/response profiling
+- Built-in dashboard integration
+- Route detection and sampling</p>
+<p><strong>Use Case:</strong> Flask web applications</p>
+<h3 id="sqlalchemy-integration-pip-install-profilissqlalchemy">SQLAlchemy Integration (<code>pip install profilis[sqlalchemy]</code>)<a class="headerlink" href="#sqlalchemy-integration-pip-install-profilissqlalchemy" title="Permanent link">&para;</a></h3>
+<p><strong>Dependencies:</strong>
+- Core dependencies
+- <code>sqlalchemy&gt;=2.0</code>
+- <code>aiosqlite</code>
+- <code>greenlet</code></p>
+<p><strong>Features:</strong>
+- Everything from core
+- Automatic SQL query profiling
+- Query redaction for security
+- Performance metrics</p>
+<p><strong>Use Case:</strong> Applications using SQLAlchemy</p>
+<h3 id="mongodb-integration-pip-install-profilismongo">MongoDB Integration (<code>pip install profilis[mongo]</code>)<a class="headerlink" href="#mongodb-integration-pip-install-profilismongo" title="Permanent link">&para;</a></h3>
+<p><strong>Dependencies:</strong>
+- Core dependencies
+- <code>pymongo&gt;=4.3</code>
+- <code>motor&gt;=3.3</code></p>
+<p><strong>Features:</strong>
+- Everything from core
+- Automatic MongoDB command profiling
+- PyMongo and Motor support
+- Command statistics extraction
+- Error tracking and analysis</p>
+<p><strong>Use Case:</strong> Applications using MongoDB</p>
+<h3 id="neo4j-integration-pip-install-profilisneo4j">Neo4j Integration (<code>pip install profilis[neo4j]</code>)<a class="headerlink" href="#neo4j-integration-pip-install-profilisneo4j" title="Permanent link">&para;</a></h3>
+<p><strong>Dependencies:</strong>
+- Core dependencies
+- <code>neo4j&gt;=5.14</code></p>
+<p><strong>Features:</strong>
+- Everything from core
+- Automatic Neo4j query profiling
+- Session and transaction monitoring
+- Cypher query analysis
+- Graph metrics extraction</p>
+<p><strong>Use Case:</strong> Applications using Neo4j graph database</p>
+<h3 id="pyodbc-integration-pip-install-profilispyodbc">pyodbc Integration (<code>pip install profilis[pyodbc]</code>)<a class="headerlink" href="#pyodbc-integration-pip-install-profilispyodbc" title="Permanent link">&para;</a></h3>
+<p><strong>Dependencies:</strong>
+- Core dependencies
+- <code>pyodbc</code></p>
+<p><strong>Features:</strong>
+- Everything from core
+- Automatic pyodbc cursor profiling
+- Raw cursor wrapper for execute/executemany operations
+- SQL monitoring with parameter redaction
+- Multi-vendor database support</p>
+<p><strong>Use Case:</strong> Applications using pyodbc with ODBC-compatible databases</p>
+<h3 id="performance-optimization-pip-install-profilisperf">Performance Optimization (<code>pip install profilis[perf]</code>)<a class="headerlink" href="#performance-optimization-pip-install-profilisperf" title="Permanent link">&para;</a></h3>
+<p><strong>Dependencies:</strong>
+- Core dependencies
+- <code>orjson&gt;=3.8</code></p>
+<p><strong>Features:</strong>
+- Everything from core
+- Faster JSON serialization
+- Reduced memory usage
+- Better performance for high-throughput applications</p>
+<p><strong>Use Case:</strong> Production applications with high event volumes</p>
+<h3 id="all-integrations-pip-install-profilisall">All Integrations (<code>pip install profilis[all]</code>)<a class="headerlink" href="#all-integrations-pip-install-profilisall" title="Permanent link">&para;</a></h3>
+<p><strong>Dependencies:</strong>
+- All framework integrations
+- All database integrations
+- Performance optimizations</p>
+<p><strong>Features:</strong>
+- Complete feature set
+- All available integrations
+- Maximum performance</p>
+<p><strong>Use Case:</strong> Applications using multiple frameworks/databases</p>
+<h2 id="development-installation">Development Installation<a class="headerlink" href="#development-installation" title="Permanent link">&para;</a></h2>
+<p>For contributors and developers:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Clone the repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ankan97dutta/profilis.git
+<span class="nb">cd</span><span class="w"> </span>profilis
+
+<span class="c1"># Install in editable mode with development dependencies</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+
+<span class="c1"># Or use the requirements file</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+</code></pre></div>
+<h2 id="virtual-environment-setup">Virtual Environment Setup<a class="headerlink" href="#virtual-environment-setup" title="Permanent link">&para;</a></h2>
+<p><strong>Recommended approach:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Create virtual environment</span>
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>profilis-env
+
+<span class="c1"># Activate virtual environment</span>
+<span class="c1"># On Windows:</span>
+profilis-env<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+<span class="c1"># On macOS/Linux:</span>
+<span class="nb">source</span><span class="w"> </span>profilis-env/bin/activate
+
+<span class="c1"># Install Profilis</span>
+pip<span class="w"> </span>install<span class="w"> </span>profilis<span class="o">[</span>flask,sqlalchemy<span class="o">]</span>
+</code></pre></div>
+<h2 id="production-installation">Production Installation<a class="headerlink" href="#production-installation" title="Permanent link">&para;</a></h2>
+<p>For production deployments:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Install with specific versions for stability</span>
+pip<span class="w"> </span>install<span class="w"> </span>profilis<span class="o">[</span>flask,sqlalchemy<span class="o">]==</span><span class="m">0</span>.1.0
+
+<span class="c1"># Or use requirements file with pinned versions</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-production.txt
+</code></pre></div>
+<h2 id="troubleshooting-installation">Troubleshooting Installation<a class="headerlink" href="#troubleshooting-installation" title="Permanent link">&para;</a></h2>
+<h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Import Errors</strong>
+   <div class="highlight"><pre><span></span><code><span class="c1"># Ensure core dependencies are installed</span>
+pip<span class="w"> </span>install<span class="w"> </span>typing_extensions&gt;<span class="o">=</span><span class="m">4</span>.0
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Framework Integration Not Working</strong>
+   <div class="highlight"><pre><span></span><code><span class="c1"># Check if framework dependencies are installed</span>
+pip<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>flask
+pip<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>sqlalchemy
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Performance Issues</strong>
+   <div class="highlight"><pre><span></span><code><span class="c1"># Install performance optimizations</span>
+pip<span class="w"> </span>install<span class="w"> </span>profilis<span class="o">[</span>perf<span class="o">]</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Version Conflicts</strong>
+   <div class="highlight"><pre><span></span><code><span class="c1"># Use virtual environment</span>
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>profilis-env
+<span class="nb">source</span><span class="w"> </span>profilis-env/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>profilis<span class="o">[</span>flask,sqlalchemy<span class="o">]</span>
+</code></pre></div></p>
+</li>
+</ol>
+<h3 id="dependency-resolution">Dependency Resolution<a class="headerlink" href="#dependency-resolution" title="Permanent link">&para;</a></h3>
+<p>If you encounter dependency conflicts:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Check current environment</span>
+pip<span class="w"> </span>list
+
+<span class="c1"># Install with --force-reinstall if needed</span>
+pip<span class="w"> </span>install<span class="w"> </span>--force-reinstall<span class="w"> </span>profilis<span class="o">[</span>flask<span class="o">]</span>
+
+<span class="c1"># Or use pip-tools for dependency resolution</span>
+pip<span class="w"> </span>install<span class="w"> </span>pip-tools
+pip-compile<span class="w"> </span>requirements-flask.txt
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-flask.txt
+</code></pre></div>
+<h2 id="platform-specific-notes">Platform-Specific Notes<a class="headerlink" href="#platform-specific-notes" title="Permanent link">&para;</a></h2>
+<h3 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Ensure Visual C++ build tools are installed for some dependencies</li>
+<li>Use <code>py</code> instead of <code>python</code> if you have multiple Python versions</li>
+</ul>
+<h3 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Use Homebrew Python for better dependency management</li>
+<li>Some dependencies may require Xcode command line tools</li>
+</ul>
+<h3 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Install development headers: <code>sudo apt-get install python3-dev</code></li>
+<li>For pyodbc: <code>sudo apt-get install unixodbc-dev</code></li>
+</ul>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<p>After installation:</p>
+<ol>
+<li><a href="../getting-started/">Getting Started</a> - Quick setup and basic usage</li>
+<li><a href="../configuration/">Configuration</a> - Tuning and customization</li>
+<li><a href="../adapters/">Framework Adapters</a> - Framework-specific integration</li>
+<li><a href="../databases/">Database Support</a> - Database instrumentation</li>
+<li><a href="../exporters/">Exporters</a> - Output configuration</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

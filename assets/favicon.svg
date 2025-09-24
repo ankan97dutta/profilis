@@ -1,0 +1,19 @@
+<svg width="32" height="32" viewBox="0 0 512 512"
+     xmlns="http://www.w3.org/2000/svg">
+  <!-- Spyglass: Cool Tech Palette -->
+
+  <!-- Outer ring -->
+  <circle cx="256" cy="256" r="180" stroke="#2E3440" stroke-width="28" fill="none"/>
+
+  <!-- Inner ring -->
+  <circle cx="256" cy="256" r="108" stroke="#ECEFF4" stroke-width="20" fill="none"/>
+
+  <!-- Flow curve -->
+  <path d="M140 300 C200 180, 312 332, 372 212"
+        stroke="#5E81AC" stroke-width="24" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Handle -->
+  <rect x="356" y="356" width="120" height="28" rx="14"
+        transform="rotate(45 356 356)" fill="#2E3440"/>
+</svg>

@@ -1,0 +1,1420 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../../overview/roadmap/" rel="prev"/>
+<link href="../../guides/getting-started/" rel="next"/>
+<link href="../../assets/favicon.svg" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.20" name="generator"/>
+<title>Architecture - Profilis</title>
+<link href="../../assets/stylesheets/main.e53b48f4.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../stylesheets/extra.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="custom" data-md-color-primary="custom" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#architecture">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Profilis" class="md-header__button md-logo" data-md-component="logo" href="../.." title="Profilis">
+<img alt="logo" src="../../assets/logo.svg"/>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Profilis
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Architecture
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-hidden="true" class="md-option" data-md-color-accent="custom" data-md-color-media="" data-md-color-primary="custom" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/ankan97dutta/profilis" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../overview/problem-statement/">
+          
+  
+  
+  Overview
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="./">
+          
+  
+  
+  Architecture
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../guides/getting-started/">
+          
+  
+  
+  Guides
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../adapters/flask/">
+          
+  
+  
+  Adapters
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../databases/sqlalchemy/">
+          
+  
+  
+  Databases
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../exporters/jsonl/">
+          
+  
+  
+  Exporters
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ui/ui/">
+          
+  
+  
+  UI
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../meta/contributing/">
+          
+  
+  
+  Meta
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Profilis" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="Profilis">
+<img alt="logo" src="../../assets/logo.svg"/>
+</a>
+    Profilis
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/ankan97dutta/profilis" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    Home
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    Overview
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../overview/problem-statement/">
+<span class="md-ellipsis">
+    Problem
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../overview/roadmap/">
+<span class="md-ellipsis">
+    Roadmap
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-ellipsis">
+    Architecture
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Architecture
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    Architecture
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#system-overview">
+<span class="md-ellipsis">
+      System Overview
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#core-components">
+<span class="md-ellipsis">
+      Core Components
+    </span>
+</a>
+<nav aria-label="Core Components" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#asynccollector">
+<span class="md-ellipsis">
+      AsyncCollector
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#emitter">
+<span class="md-ellipsis">
+      Emitter
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#runtime-context">
+<span class="md-ellipsis">
+      Runtime Context
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#framework-integration">
+<span class="md-ellipsis">
+      Framework Integration
+    </span>
+</a>
+<nav aria-label="Framework Integration" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#flask-adapter">
+<span class="md-ellipsis">
+      Flask Adapter
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sqlalchemy-instrumentation">
+<span class="md-ellipsis">
+      SQLAlchemy Instrumentation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data-flow">
+<span class="md-ellipsis">
+      Data Flow
+    </span>
+</a>
+<nav aria-label="Data Flow" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#event-lifecycle">
+<span class="md-ellipsis">
+      Event Lifecycle
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-characteristics">
+<span class="md-ellipsis">
+      Performance Characteristics
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exporters">
+<span class="md-ellipsis">
+      Exporters
+    </span>
+</a>
+<nav aria-label="Exporters" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#jsonl-exporter">
+<span class="md-ellipsis">
+      JSONL Exporter
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#console-exporter">
+<span class="md-ellipsis">
+      Console Exporter
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prometheus-exporter-planned">
+<span class="md-ellipsis">
+      Prometheus Exporter (Planned)
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ui-dashboard">
+<span class="md-ellipsis">
+      UI Dashboard
+    </span>
+</a>
+<nav aria-label="UI Dashboard" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statsstore">
+<span class="md-ellipsis">
+      StatsStore
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dashboard-components">
+<span class="md-ellipsis">
+      Dashboard Components
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-optimization">
+<span class="md-ellipsis">
+      Performance Optimization
+    </span>
+</a>
+<nav aria-label="Performance Optimization" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#memory-management">
+<span class="md-ellipsis">
+      Memory Management
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#async-processing">
+<span class="md-ellipsis">
+      Async Processing
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scalability-considerations">
+<span class="md-ellipsis">
+      Scalability Considerations
+    </span>
+</a>
+<nav aria-label="Scalability Considerations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#horizontal-scaling">
+<span class="md-ellipsis">
+      Horizontal Scaling
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#vertical-scaling">
+<span class="md-ellipsis">
+      Vertical Scaling
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#security-considerations">
+<span class="md-ellipsis">
+      Security Considerations
+    </span>
+</a>
+<nav aria-label="Security Considerations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data-privacy">
+<span class="md-ellipsis">
+      Data Privacy
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#production-hardening">
+<span class="md-ellipsis">
+      Production Hardening
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#monitoring-and-observability">
+<span class="md-ellipsis">
+      Monitoring and Observability
+    </span>
+</a>
+<nav aria-label="Monitoring and Observability" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#health-checks">
+<span class="md-ellipsis">
+      Health Checks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#alerting">
+<span class="md-ellipsis">
+      Alerting
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#future-architecture">
+<span class="md-ellipsis">
+      Future Architecture
+    </span>
+</a>
+<nav aria-label="Future Architecture" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#planned-enhancements">
+<span class="md-ellipsis">
+      Planned Enhancements
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    Guides
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../guides/getting-started/">
+<span class="md-ellipsis">
+    Getting started
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../guides/configuration/">
+<span class="md-ellipsis">
+    Configuration
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../guides/installation/">
+<span class="md-ellipsis">
+    Installation
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    Adapters
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            Adapters
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adapters/flask/">
+<span class="md-ellipsis">
+    Flask
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adapters/fastapi/">
+<span class="md-ellipsis">
+    FastAPI
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+<span class="md-ellipsis">
+    Databases
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            Databases
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../databases/sqlalchemy/">
+<span class="md-ellipsis">
+    SQLAlchemy
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../databases/mongodb/">
+<span class="md-ellipsis">
+    MongoDB
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../databases/neo4j/">
+<span class="md-ellipsis">
+    Neo4j
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../databases/pyodbc/">
+<span class="md-ellipsis">
+    pyodbc
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+<span class="md-ellipsis">
+    Exporters
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_7">
+<span class="md-nav__icon md-icon"></span>
+            Exporters
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../exporters/jsonl/">
+<span class="md-ellipsis">
+    JSONL
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_8" type="checkbox"/>
+<label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+<span class="md-ellipsis">
+    UI
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_8_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_8">
+<span class="md-nav__icon md-icon"></span>
+            UI
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../ui/ui/">
+<span class="md-ellipsis">
+    UI
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+<span class="md-ellipsis">
+    Meta
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            Meta
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../meta/contributing/">
+<span class="md-ellipsis">
+    Contributing
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../meta/development-guidelines/">
+<span class="md-ellipsis">
+    Dev guidelines
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../meta/code-of-conduct/">
+<span class="md-ellipsis">
+    Code of Conduct
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#system-overview">
+<span class="md-ellipsis">
+      System Overview
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#core-components">
+<span class="md-ellipsis">
+      Core Components
+    </span>
+</a>
+<nav aria-label="Core Components" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#asynccollector">
+<span class="md-ellipsis">
+      AsyncCollector
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#emitter">
+<span class="md-ellipsis">
+      Emitter
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#runtime-context">
+<span class="md-ellipsis">
+      Runtime Context
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#framework-integration">
+<span class="md-ellipsis">
+      Framework Integration
+    </span>
+</a>
+<nav aria-label="Framework Integration" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#flask-adapter">
+<span class="md-ellipsis">
+      Flask Adapter
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sqlalchemy-instrumentation">
+<span class="md-ellipsis">
+      SQLAlchemy Instrumentation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data-flow">
+<span class="md-ellipsis">
+      Data Flow
+    </span>
+</a>
+<nav aria-label="Data Flow" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#event-lifecycle">
+<span class="md-ellipsis">
+      Event Lifecycle
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-characteristics">
+<span class="md-ellipsis">
+      Performance Characteristics
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exporters">
+<span class="md-ellipsis">
+      Exporters
+    </span>
+</a>
+<nav aria-label="Exporters" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#jsonl-exporter">
+<span class="md-ellipsis">
+      JSONL Exporter
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#console-exporter">
+<span class="md-ellipsis">
+      Console Exporter
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prometheus-exporter-planned">
+<span class="md-ellipsis">
+      Prometheus Exporter (Planned)
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ui-dashboard">
+<span class="md-ellipsis">
+      UI Dashboard
+    </span>
+</a>
+<nav aria-label="UI Dashboard" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statsstore">
+<span class="md-ellipsis">
+      StatsStore
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dashboard-components">
+<span class="md-ellipsis">
+      Dashboard Components
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-optimization">
+<span class="md-ellipsis">
+      Performance Optimization
+    </span>
+</a>
+<nav aria-label="Performance Optimization" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#memory-management">
+<span class="md-ellipsis">
+      Memory Management
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#async-processing">
+<span class="md-ellipsis">
+      Async Processing
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scalability-considerations">
+<span class="md-ellipsis">
+      Scalability Considerations
+    </span>
+</a>
+<nav aria-label="Scalability Considerations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#horizontal-scaling">
+<span class="md-ellipsis">
+      Horizontal Scaling
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#vertical-scaling">
+<span class="md-ellipsis">
+      Vertical Scaling
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#security-considerations">
+<span class="md-ellipsis">
+      Security Considerations
+    </span>
+</a>
+<nav aria-label="Security Considerations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data-privacy">
+<span class="md-ellipsis">
+      Data Privacy
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#production-hardening">
+<span class="md-ellipsis">
+      Production Hardening
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#monitoring-and-observability">
+<span class="md-ellipsis">
+      Monitoring and Observability
+    </span>
+</a>
+<nav aria-label="Monitoring and Observability" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#health-checks">
+<span class="md-ellipsis">
+      Health Checks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#alerting">
+<span class="md-ellipsis">
+      Alerting
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#future-architecture">
+<span class="md-ellipsis">
+      Future Architecture
+    </span>
+</a>
+<nav aria-label="Future Architecture" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#planned-enhancements">
+<span class="md-ellipsis">
+      Planned Enhancements
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">¶</a></h1>
+<p>Profilis is built with a modular, non-blocking architecture designed for high performance and minimal overhead.</p>
+<h2 id="system-overview">System Overview<a class="headerlink" href="#system-overview" title="Permanent link">¶</a></h2>
+<pre class="mermaid"><code>flowchart LR
+  subgraph App
+    FW[Framework adapters]
+    DEC[Decorators]
+    DBI[DB adapters]
+  end
+  subgraph Core
+    CTX[ContextVars]
+    EMT[Emitter]
+    Q[Async Collector]
+    ST[StatsStore]
+  end
+  subgraph Exporters
+    JSONL[JSONL]
+    PROM[Prometheus]
+    OTLP[(OTLP)]
+  end
+  subgraph UI
+    API[/metrics.json/]
+    HTML[Dashboard]
+  end
+  FW --&gt; EMT
+  DEC --&gt; EMT
+  DBI --&gt; EMT
+  EMT --&gt; ST
+  EMT --&gt; Q
+  Q --&gt; JSONL
+  Q --&gt; PROM
+  Q --&gt; OTLP
+  ST --&gt; API --&gt; HTML</code></pre>
+<h2 id="core-components">Core Components<a class="headerlink" href="#core-components" title="Permanent link">¶</a></h2>
+<h3 id="asynccollector">AsyncCollector<a class="headerlink" href="#asynccollector" title="Permanent link">¶</a></h3>
+<p>The heart of Profilis's non-blocking architecture.</p>
+<p><strong>Responsibilities:</strong>
+- Asynchronous event collection and batching
+- Backpressure handling with configurable queue sizes
+- Efficient batch processing and export
+- Memory management and garbage collection</p>
+<p><strong>Key Features:</strong>
+- <strong>Queue Management</strong>: Configurable bounded queues with drop-oldest policy
+- <strong>Batch Processing</strong>: Configurable batch sizes for optimal throughput
+- <strong>Flush Scheduling</strong>: Configurable flush intervals for latency vs. throughput trade-offs
+- <strong>Backpressure Handling</strong>: Automatic event dropping under load</p>
+<p><strong>Configuration:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">collector</span> <span class="o">=</span> <span class="n">AsyncCollector</span><span class="p">(</span>
+    <span class="n">exporter</span><span class="p">,</span>
+    <span class="n">queue_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span>        <span class="c1"># Maximum events in memory</span>
+    <span class="n">batch_max</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>          <span class="c1"># Maximum events per batch</span>
+    <span class="n">flush_interval</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>     <span class="c1"># Flush interval in seconds</span>
+    <span class="n">drop_oldest</span><span class="o">=</span><span class="kc">True</span>        <span class="c1"># Drop events under backpressure</span>
+<span class="p">)</span>
+</code></pre></div></p>
+<h3 id="emitter">Emitter<a class="headerlink" href="#emitter" title="Permanent link">¶</a></h3>
+<p>High-performance event creation and emission.</p>
+<p><strong>Responsibilities:</strong>
+- Event creation with minimal allocations
+- Runtime context integration
+- Event type specialization (REQ, FN, DB)
+- Performance optimization for hot paths</p>
+<p><strong>Performance Characteristics:</strong>
+- <strong>Event Creation</strong>: ≤15µs per event
+- <strong>Memory Overhead</strong>: ~100 bytes per event
+- <strong>Allocation Efficiency</strong>: Minimal object creation
+- <strong>Hot Path Optimization</strong>: Inline critical operations</p>
+<p><strong>Event Types:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1"># Request events</span>
+<span class="n">emitter</span><span class="o">.</span><span class="n">emit_req</span><span class="p">(</span><span class="s2">"/api/users"</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">dur_ns</span><span class="o">=</span><span class="mi">15000000</span><span class="p">)</span>
+
+<span class="c1"># Function events</span>
+<span class="n">emitter</span><span class="o">.</span><span class="n">emit_fn</span><span class="p">(</span><span class="s2">"expensive_calculation"</span><span class="p">,</span> <span class="n">dur_ns</span><span class="o">=</span><span class="mi">5000000</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Database events</span>
+<span class="n">emitter</span><span class="o">.</span><span class="n">emit_db</span><span class="p">(</span><span class="s2">"SELECT * FROM users"</span><span class="p">,</span> <span class="n">dur_ns</span><span class="o">=</span><span class="mi">8000000</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div></p>
+<h3 id="runtime-context">Runtime Context<a class="headerlink" href="#runtime-context" title="Permanent link">¶</a></h3>
+<p>Distributed tracing and context management.</p>
+<p><strong>Components:</strong>
+- <strong>Context Variables</strong>: Thread-local and async context storage
+- <strong>Trace Management</strong>: Unique trace and span ID generation
+- <strong>Context Propagation</strong>: Automatic context inheritance
+- <strong>Async Support</strong>: Full async/await compatibility</p>
+<p><strong>Usage:</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">profilis.runtime</span><span class="w"> </span><span class="kn">import</span> <span class="n">use_span</span><span class="p">,</span> <span class="n">span_id</span><span class="p">,</span> <span class="n">get_trace_id</span><span class="p">,</span> <span class="n">get_span_id</span>
+
+<span class="c1"># Create distributed trace context</span>
+<span class="k">with</span> <span class="n">use_span</span><span class="p">(</span><span class="n">trace_id</span><span class="o">=</span><span class="n">span_id</span><span class="p">()):</span>
+    <span class="n">current_trace</span> <span class="o">=</span> <span class="n">get_trace_id</span><span class="p">()</span>
+
+    <span class="c1"># Nested spans inherit trace context</span>
+    <span class="k">with</span> <span class="n">use_span</span><span class="p">(</span><span class="n">span_id</span><span class="o">=</span><span class="n">span_id</span><span class="p">()):</span>
+        <span class="n">nested_span</span> <span class="o">=</span> <span class="n">get_span_id</span><span class="p">()</span>
+        <span class="c1"># All events inherit the trace context</span>
+</code></pre></div></p>
+<h2 id="framework-integration">Framework Integration<a class="headerlink" href="#framework-integration" title="Permanent link">¶</a></h2>
+<h3 id="flask-adapter">Flask Adapter<a class="headerlink" href="#flask-adapter" title="Permanent link">¶</a></h3>
+<p>Automatic request/response profiling with hooks.</p>
+<p><strong>Integration Points:</strong>
+- <strong>before_request</strong>: Start timing and create context
+- <strong>after_request</strong>: Record response metrics and timing
+- <strong>teardown_request</strong>: Handle exceptions and cleanup</p>
+<p><strong>Features:</strong>
+- Automatic route detection
+- Configurable sampling rates
+- Route exclusion patterns
+- Exception tracking
+- Bytes in/out monitoring</p>
+<p><strong>Configuration:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">profilis</span> <span class="o">=</span> <span class="n">ProfilisFlask</span><span class="p">(</span>
+    <span class="n">app</span><span class="p">,</span>
+    <span class="n">collector</span><span class="o">=</span><span class="n">collector</span><span class="p">,</span>
+    <span class="n">exclude_routes</span><span class="o">=</span><span class="p">[</span><span class="s2">"/health"</span><span class="p">,</span> <span class="s2">"/metrics"</span><span class="p">],</span>
+    <span class="n">sample</span><span class="o">=</span><span class="mf">0.1</span>  <span class="c1"># 10% sampling</span>
+<span class="p">)</span>
+</code></pre></div></p>
+<h3 id="sqlalchemy-instrumentation">SQLAlchemy Instrumentation<a class="headerlink" href="#sqlalchemy-instrumentation" title="Permanent link">¶</a></h3>
+<p>Database query profiling and monitoring.</p>
+<p><strong>Integration Points:</strong>
+- <strong>Cursor Execution</strong>: Hook before/after query execution
+- <strong>Query Analysis</strong>: Parse and categorize SQL queries
+- <strong>Performance Metrics</strong>: Track execution time and row counts
+- <strong>Security</strong>: Query redaction for sensitive data</p>
+<p><strong>Features:</strong>
+- Microsecond precision timing
+- Automatic query redaction
+- Row count tracking
+- Async engine support
+- Query pattern analysis</p>
+<h2 id="data-flow">Data Flow<a class="headerlink" href="#data-flow" title="Permanent link">¶</a></h2>
+<h3 id="event-lifecycle">Event Lifecycle<a class="headerlink" href="#event-lifecycle" title="Permanent link">¶</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant App as Application
+    participant Emitter as Emitter
+    participant Collector as AsyncCollector
+    participant Exporter as Exporter
+    participant Storage as Storage
+
+    App-&gt;&gt;Emitter: emit_req/fn/db()
+    Emitter-&gt;&gt;Collector: enqueue(event)
+    Collector-&gt;&gt;Collector: batch events
+    loop Every flush_interval
+        Collector-&gt;&gt;Exporter: export(batch)
+        Exporter-&gt;&gt;Storage: write events
+    end</code></pre>
+<h3 id="performance-characteristics">Performance Characteristics<a class="headerlink" href="#performance-characteristics" title="Permanent link">¶</a></h3>
+<p><strong>Event Processing Pipeline:</strong>
+1. <strong>Event Creation</strong>: ≤15µs (Emitter)
+2. <strong>Queue Enqueue</strong>: ≤1µs (AsyncCollector)
+3. <strong>Batch Processing</strong>: ≤5µs per batch
+4. <strong>Export</strong>: Varies by exporter (JSONL: ≤100µs per batch)</p>
+<p><strong>Memory Management:</strong>
+- <strong>Event Size</strong>: ~100 bytes per event
+- <strong>Queue Memory</strong>: queue_size × 100 bytes
+- <strong>Batch Memory</strong>: batch_max × 100 bytes
+- <strong>Total Overhead</strong>: (queue_size + batch_max) × 100 bytes</p>
+<h2 id="exporters">Exporters<a class="headerlink" href="#exporters" title="Permanent link">¶</a></h2>
+<h3 id="jsonl-exporter">JSONL Exporter<a class="headerlink" href="#jsonl-exporter" title="Permanent link">¶</a></h3>
+<p>Rotating log files with configurable retention.</p>
+<p><strong>Features:</strong>
+- Automatic file rotation by size/time
+- Atomic file operations
+- Configurable naming patterns
+- Compression support</p>
+<p><strong>Configuration:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">exporter</span> <span class="o">=</span> <span class="n">JSONLExporter</span><span class="p">(</span>
+    <span class="nb">dir</span><span class="o">=</span><span class="s2">"./logs"</span><span class="p">,</span>
+    <span class="n">rotate_bytes</span><span class="o">=</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">,</span>  <span class="c1"># 1MB per file</span>
+    <span class="n">rotate_secs</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span>        <span class="c1"># Hourly rotation</span>
+    <span class="n">filename_template</span><span class="o">=</span><span class="s2">"profilis-</span><span class="si">{timestamp}</span><span class="s2">.jsonl"</span>
+<span class="p">)</span>
+</code></pre></div></p>
+<h3 id="console-exporter">Console Exporter<a class="headerlink" href="#console-exporter" title="Permanent link">¶</a></h3>
+<p>Development-friendly output formatting.</p>
+<p><strong>Features:</strong>
+- Pretty-printed output
+- Color-coded event types
+- Compact mode for production
+- Configurable formatting</p>
+<h3 id="prometheus-exporter-planned">Prometheus Exporter (Planned)<a class="headerlink" href="#prometheus-exporter-planned" title="Permanent link">¶</a></h3>
+<p>Native Prometheus metrics integration.</p>
+<p><strong>Planned Features:</strong>
+- HTTP metrics endpoint
+- Custom metric definitions
+- Grafana dashboard templates
+- Alerting rules</p>
+<h2 id="ui-dashboard">UI Dashboard<a class="headerlink" href="#ui-dashboard" title="Permanent link">¶</a></h2>
+<h3 id="statsstore">StatsStore<a class="headerlink" href="#statsstore" title="Permanent link">¶</a></h3>
+<p>In-memory statistics with rolling windows.</p>
+<p><strong>Features:</strong>
+- 15-minute rolling window (configurable)
+- Real-time metric calculation
+- Error tracking and display
+- Performance trend analysis</p>
+<p><strong>Metrics:</strong>
+- Request latency percentiles
+- Error rates by route
+- Throughput statistics
+- Database query performance</p>
+<h3 id="dashboard-components">Dashboard Components<a class="headerlink" href="#dashboard-components" title="Permanent link">¶</a></h3>
+<p><strong>Real-time Metrics:</strong>
+- Request latency charts
+- Error rate monitoring
+- Throughput graphs
+- Database performance</p>
+<p><strong>Error Tracking:</strong>
+- Recent error display
+- Exception type analysis
+- Route-specific error rates
+- Stack trace information</p>
+<h2 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link">¶</a></h2>
+<h3 id="memory-management">Memory Management<a class="headerlink" href="#memory-management" title="Permanent link">¶</a></h3>
+<p><strong>Efficient Data Structures:</strong>
+- Minimal object allocation
+- Reusable event dictionaries
+- Efficient string handling
+- Optimized serialization</p>
+<p><strong>Garbage Collection:</strong>
+- Minimal GC pressure
+- Efficient memory reuse
+- Predictable memory usage
+- Low fragmentation</p>
+<h3 id="async-processing">Async Processing<a class="headerlink" href="#async-processing" title="Permanent link">¶</a></h3>
+<p><strong>Non-blocking Operations:</strong>
+- Async file I/O
+- Non-blocking queues
+- Efficient batching
+- Background processing</p>
+<p><strong>Concurrency Handling:</strong>
+- Thread-safe operations
+- Async context support
+- Efficient locking
+- Minimal contention</p>
+<h2 id="scalability-considerations">Scalability Considerations<a class="headerlink" href="#scalability-considerations" title="Permanent link">¶</a></h2>
+<h3 id="horizontal-scaling">Horizontal Scaling<a class="headerlink" href="#horizontal-scaling" title="Permanent link">¶</a></h3>
+<p><strong>Multiple Instances:</strong>
+- Stateless collectors
+- Shared storage backends
+- Load balancing support
+- Distributed tracing</p>
+<p><strong>Performance Limits:</strong>
+- Single instance: 100K+ events/second
+- Memory usage: Linear with queue size
+- CPU usage: Minimal overhead
+- Network I/O: Exporter dependent</p>
+<h3 id="vertical-scaling">Vertical Scaling<a class="headerlink" href="#vertical-scaling" title="Permanent link">¶</a></h3>
+<p><strong>Resource Optimization:</strong>
+- Queue size tuning
+- Batch size optimization
+- Flush interval adjustment
+- Memory allocation tuning</p>
+<p><strong>Monitoring:</strong>
+- Queue depth monitoring
+- Memory usage tracking
+- Performance metrics
+- Health checks</p>
+<h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">¶</a></h2>
+<h3 id="data-privacy">Data Privacy<a class="headerlink" href="#data-privacy" title="Permanent link">¶</a></h3>
+<p><strong>Query Redaction:</strong>
+- Automatic SQL parameter hiding
+- Custom redaction rules
+- Sensitive data protection
+- Audit trail maintenance</p>
+<p><strong>Access Control:</strong>
+- Dashboard authentication
+- API endpoint protection
+- Role-based access
+- Audit logging</p>
+<h3 id="production-hardening">Production Hardening<a class="headerlink" href="#production-hardening" title="Permanent link">¶</a></h3>
+<p><strong>Error Handling:</strong>
+- Graceful degradation
+- Circuit breaker patterns
+- Fallback mechanisms
+- Health monitoring</p>
+<p><strong>Resource Protection:</strong>
+- Memory limits
+- CPU throttling
+- File descriptor limits
+- Network rate limiting</p>
+<h2 id="monitoring-and-observability">Monitoring and Observability<a class="headerlink" href="#monitoring-and-observability" title="Permanent link">¶</a></h2>
+<h3 id="health-checks">Health Checks<a class="headerlink" href="#health-checks" title="Permanent link">¶</a></h3>
+<p><strong>System Health:</strong>
+- Collector status
+- Exporter health
+- Queue depth monitoring
+- Error rate tracking</p>
+<p><strong>Performance Metrics:</strong>
+- Event processing rate
+- Memory usage
+- CPU utilization
+- I/O performance</p>
+<h3 id="alerting">Alerting<a class="headerlink" href="#alerting" title="Permanent link">¶</a></h3>
+<p><strong>Threshold Monitoring:</strong>
+- Queue depth alerts
+- Error rate thresholds
+- Performance degradation
+- Resource exhaustion</p>
+<p><strong>Integration:</strong>
+- Prometheus alerts
+- Grafana dashboards
+- PagerDuty integration
+- Slack notifications</p>
+<h2 id="future-architecture">Future Architecture<a class="headerlink" href="#future-architecture" title="Permanent link">¶</a></h2>
+<h3 id="planned-enhancements">Planned Enhancements<a class="headerlink" href="#planned-enhancements" title="Permanent link">¶</a></h3>
+<p><strong>v0.2.0:</strong>
+- Additional database integrations
+- Enhanced performance monitoring
+- Better error handling</p>
+<p><strong>v0.3.0:</strong>
+- ASGI framework support
+- WebSocket profiling
+- Advanced async features</p>
+<p><strong>v0.4.0:</strong>
+- Prometheus integration
+- Advanced sampling
+- Resilience features</p>
+<p><strong>v1.0.0:</strong>
+- Enterprise features
+- High availability
+- Comprehensive monitoring</p>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+</body>
+</html>
