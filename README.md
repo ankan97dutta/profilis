@@ -20,7 +20,7 @@ Profilis provides drop-in observability across APIs, functions, and database que
 
 <img width="1126" height="642" alt="Screenshot 2025-09-01 at 12 38 50 PM" src="https://github.com/user-attachments/assets/7c9d541b-4984-4575-92fb-8c0ec48dff55" />
 
-## ⭐ Star This Repository
+## Star This Repository
 
 If you find Profilis helpful for your projects, please consider giving it a star! It helps others discover this tool and motivates continued development.
 
