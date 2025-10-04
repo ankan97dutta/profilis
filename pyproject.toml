@@ -86,6 +86,11 @@ plugins = []
 mypy_path = "src"
 ignore_missing_imports = true
 disable_error_code = ["misc", "no-any-return"]
+# Performance optimizations
+incremental = true
+cache_dir = ".mypy_cache"
+sqlite_cache = true
+skip_version_check = true
 
 [project.urls]
 "Homepage" = "https://github.com/ankan97dutta/profilis"

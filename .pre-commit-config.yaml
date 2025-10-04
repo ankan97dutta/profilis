@@ -10,7 +10,7 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies: []
-        args: [--config-file=pyproject.toml]
+        args: [--config-file=pyproject.toml, --incremental]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
