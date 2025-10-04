@@ -11,6 +11,7 @@ flask[async]>=3.0
 # FastAPI integration
 fastapi>=0.110
 starlette>=0.37
+httpx>=0.24.0
 
 # Sanic integration
 sanic>=23.0

@@ -12,12 +12,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install -U pip
-      - run: pip install -e ".[flask,sqlalchemy,dev]"
+      - run: pip install -e ".[flask,fastapi,sqlalchemy,pyodbc,mongo,perf,dev]"
       - name: Lint
         run: ruff check .
       - name: Format check
         run: ruff format --check .
       - name: Type check
-        run: mypy .
+        run: mypy src/ tests/ examples/
       - name: Tests
         run: pytest
