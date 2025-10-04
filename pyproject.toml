@@ -28,7 +28,7 @@ classifiers = [
 # Optional extras; keep runtime deps light in core
 [project.optional-dependencies]
 flask = ["flask[async]>=3.0"]
-fastapi = ["fastapi>=0.110", "starlette>=0.37"]
+fastapi = ["fastapi>=0.110", "starlette>=0.37", "httpx>=0.24.0"]
 sanic = ["sanic>=23.0"]
 sqlalchemy = ["sqlalchemy>=2.0", "aiosqlite", "greenlet"]
 pyodbc = ["pyodbc"]
@@ -38,6 +38,7 @@ perf = ["orjson>=3.8"]
 all = [
   "flask[async]>=3.0",
   "fastapi>=0.110","starlette>=0.37",
+  "httpx>=0.24.0",
   "sanic>=23.0",
   "sqlalchemy>=2.0",
   "aiosqlite",
@@ -54,7 +55,8 @@ dev = [
   "mypy>=1.0",
   "ruff>=0.1.0",
   "black>=23.0",
-  "pre-commit>=3.0"
+  "pre-commit>=3.0",
+  "uvicorn>=0.20.0"
 ]
 
 [build-system]
