@@ -18,6 +18,6 @@ jobs:
       - name: Format check
         run: ruff format --check .
       - name: Type check
-        run: mypy .
+        run: mypy src/ tests/ examples/
       - name: Tests
         run: pytest

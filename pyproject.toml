@@ -94,6 +94,11 @@ cache_dir = ".mypy_cache"
 sqlite_cache = true
 skip_version_check = true
 
+# Ignore third-party packages that may have syntax issues
+[[tool.mypy.overrides]]
+module = "neo4j.*"
+ignore_errors = true
+
 [project.urls]
 "Homepage" = "https://github.com/ankan97dutta/profilis"
 "Documentation" = "https://ankan97dutta.github.io/profilis/"
