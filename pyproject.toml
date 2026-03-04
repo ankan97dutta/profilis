@@ -29,7 +29,7 @@ classifiers = [
 [project.optional-dependencies]
 flask = ["flask[async]>=3.0"]
 fastapi = ["fastapi>=0.110", "starlette>=0.37", "httpx>=0.24.0"]
-sanic = ["sanic>=23.0"]
+sanic = ["sanic>=23.0", "sanic-testing>=24.6.0"]
 sqlalchemy = ["sqlalchemy>=2.0", "aiosqlite", "greenlet"]
 pyodbc = ["pyodbc"]
 mongo = ["pymongo>=4.3", "motor>=3.3"]
@@ -40,6 +40,7 @@ all = [
   "fastapi>=0.110","starlette>=0.37",
   "httpx>=0.24.0",
   "sanic>=23.0",
+  "sanic-testing>=24.6.0",
   "sqlalchemy>=2.0",
   "aiosqlite",
   "greenlet",
