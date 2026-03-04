@@ -375,14 +375,14 @@ def make_ui_blueprint(
         # Use Sanic's JSON helper to set correct headers.
         return sanic_json(data)
 
-    @bp.get("/metrics.json")
+    @bp.get("/metrics.json")  # type: ignore[untyped-decorator]
     async def metrics_json(request: Request) -> HTTPResponse:
         auth_resp = _check_auth(request)
         if auth_resp is not None:
             return auth_resp
         return _jsonify(stats.snapshot())
 
-    @bp.get("/errors.json")
+    @bp.get("/errors.json")  # type: ignore[untyped-decorator]
     async def errors_json(request: Request) -> HTTPResponse:
         auth_resp = _check_auth(request)
         if auth_resp is not None:
@@ -392,7 +392,7 @@ def make_ui_blueprint(
         payload = {"errors": ring.dump() if ring else empty_list}
         return _jsonify(payload)
 
-    @bp.get("/")
+    @bp.get("/")  # type: ignore[untyped-decorator]
     async def dashboard(request: Request) -> HTTPResponse:
         auth_resp = _check_auth(request)
         if auth_resp is not None:

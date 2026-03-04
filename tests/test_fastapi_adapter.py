@@ -17,7 +17,7 @@ from profilis.runtime.context import get_span_id, use_span
 def make_collector_sink() -> tuple[AsyncCollector[dict[str, Any]], list[Any]]:
     items: list[Any] = []
     col: AsyncCollector[dict[str, Any]] = AsyncCollector(
-        lambda b: items.extend(b), queue_size=100, flush_interval=0.02
+        items.extend, queue_size=100, flush_interval=0.02
     )
     return col, items
 

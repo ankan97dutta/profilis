@@ -8,7 +8,7 @@ from profilis.core.emitter import Emitter
 
 received: list[Any] = []
 col = AsyncCollector[dict[str, Any]](
-    lambda b: received.extend(b), queue_size=10000, flush_interval=1.0, batch_max=1000
+    received.extend, queue_size=10000, flush_interval=1.0, batch_max=1000
 )
 em = Emitter(col)
 

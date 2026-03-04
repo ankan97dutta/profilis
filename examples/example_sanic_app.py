@@ -31,12 +31,12 @@ HTTP_INTERNAL_SERVER_ERROR = 500
 app = Sanic("profilis-demo")
 
 
-@app.route("/ok")
+@app.route("/ok")  # type: ignore[untyped-decorator]
 async def ok(request: Request) -> JSONResponse:
     return sanic_json({"ok": True})
 
 
-@app.route("/boom")
+@app.route("/boom")  # type: ignore[untyped-decorator]
 async def boom(request: Request) -> None:
     raise RuntimeError("demo boom (sanic)")
 
@@ -62,13 +62,13 @@ instrument_sanic_app(
 stats = StatsStore()
 
 
-@app.middleware("request")
+@app.middleware("request")  # type: ignore[untyped-decorator]
 async def _demo_before(request: Request) -> None:
     # Record start time for StatsStore (independent of the main instrumentation)
     request.ctx._profilis_demo_start_ns = time_ns()
 
 
-@app.middleware("response")
+@app.middleware("response")  # type: ignore[untyped-decorator]
 async def _demo_after(request: Request, response: Any) -> Any:
     start = getattr(request.ctx, "_profilis_demo_start_ns", None)
     if start is not None:

@@ -11,6 +11,7 @@ import logging
 import traceback
 import typing as t
 from collections.abc import Awaitable, Callable
+from typing import Any
 
 from sanic import Sanic
 
@@ -49,7 +50,7 @@ def _should_exclude_route(path: str, excludes: t.Iterable[str]) -> bool:
 
 
 def instrument_sanic_app(  # noqa: PLR0915
-    app: Sanic,
+    app: Sanic[Any, Any],
     emitter: Emitter,
     config: SanicConfig | None = None,
     *,
@@ -71,7 +72,7 @@ def instrument_sanic_app(  # noqa: PLR0915
     cfg = config or SanicConfig()
 
     # request middleware: set start timestamp and record method/path
-    @app.middleware("request")
+    @app.middleware("request")  # type: ignore[untyped-decorator]
     async def _profilis_request_middleware(request: t.Any) -> None:
         # Only HTTP requests; Sanic uses Request objects for http
         try:
@@ -93,7 +94,7 @@ def instrument_sanic_app(  # noqa: PLR0915
                 request.ctx._profilis_excluded = True
 
     # response middleware: fires on normal response
-    @app.middleware("response")
+    @app.middleware("response")  # type: ignore[untyped-decorator]
     async def _profilis_response_middleware(request: t.Any, response: t.Any) -> None:
         try:
             if getattr(request.ctx, "_profilis_excluded", False):
@@ -333,9 +334,12 @@ def instrument_sanic_app(  # noqa: PLR0915
                         # should set an explicit Content-Type header.
                         content_type = "text/html; charset=utf-8"
 
+                    headers_dict: dict[str, str] | None = (
+                        dict(response_headers) if response_headers else None
+                    )
                     return raw(
                         body,
-                        headers=response_headers or None,
+                        headers=headers_dict,
                         status=status,
                         content_type=content_type,
                     )

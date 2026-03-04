@@ -21,7 +21,7 @@ HTTP_INTERNAL_SERVER_ERROR = 500
 def make_collector_sink() -> tuple[AsyncCollector[dict[str, Any]], list[Any]]:
     items: list[Any] = []
     col: AsyncCollector[dict[str, Any]] = AsyncCollector(
-        lambda b: items.extend(b), queue_size=100, flush_interval=0.02
+        items.extend, queue_size=100, flush_interval=0.02
     )
     return col, items
 
@@ -29,18 +29,18 @@ def make_collector_sink() -> tuple[AsyncCollector[dict[str, Any]], list[Any]]:
 def create_sanic_app(
     emitter: Emitter,
     cfg: Optional[SanicConfig] = None,
-) -> Sanic:
+) -> Sanic[Any, Any]:
     app = Sanic("profilis-test")
 
-    @app.route("/ok")
+    @app.route("/ok")  # type: ignore[untyped-decorator]
     async def ok(request: Any) -> Any:
         return sanic_json({"ok": True})
 
-    @app.route("/err")
+    @app.route("/err")  # type: ignore[untyped-decorator]
     async def err(request: Any) -> None:
         raise RuntimeError("boom-sanic")
 
-    @app.route("/slow")
+    @app.route("/slow")  # type: ignore[untyped-decorator]
     async def slow(request: Any) -> Any:
         await asyncio.sleep(0.01)
         return sanic_text("done")
@@ -54,7 +54,7 @@ def test_sanic_basic_emits() -> None:
     em = Emitter(col)
     app = create_sanic_app(em, SanicConfig(sampling_rate=1.0))
     client = SanicTestClient(app)
-    request, response = client.get("/ok")
+    _request, response = client.get("/ok")
     assert response.status == HTTP_OK
     time.sleep(0.05)
     http_items = [i for i in items if isinstance(i, dict) and i.get("kind") == "HTTP"]
@@ -69,7 +69,7 @@ def test_sanic_exception_emits() -> None:
     client = SanicTestClient(app)
     # In modern Sanic + sanic-testing, exceptions are turned into 500 responses
     # instead of being raised directly to the caller.
-    request, response = client.get("/err")
+    _request, response = client.get("/err")
     assert response.status == HTTP_INTERNAL_SERVER_ERROR
     time.sleep(0.05)
     http_items = [i for i in items if isinstance(i, dict) and i.get("kind") == "HTTP"]
@@ -89,7 +89,7 @@ def test_sanic_mount_asgi_ui_no_crash() -> None:
             await send({"type": "http.response.start", "status": HTTP_OK, "headers": headers})
             await send({"type": "http.response.body", "body": b"ok", "more_body": False})
 
-    col, items = make_collector_sink()
+    col, _items = make_collector_sink()
     em = Emitter(col)
     app = Sanic("mount-test")
 
@@ -102,7 +102,7 @@ def test_sanic_mount_asgi_ui_no_crash() -> None:
         mount_path="/profilis",
     )
     client = SanicTestClient(app)
-    req, res = client.get("/profilis")
+    _req, res = client.get("/profilis")
     assert res.status == HTTP_OK
     assert res.text == "ok"
 
@@ -142,7 +142,7 @@ def test_sanic_ui_metrics_and_errors_endpoints() -> None:
     client = SanicTestClient(app)
 
     # metrics.json should return a JSON payload with basic keys
-    req, res = client.get("/profilis/metrics.json")
+    _req, res = client.get("/profilis/metrics.json")
     assert res.status == HTTP_OK
     data = res.json
     assert "rps" in data
@@ -150,7 +150,7 @@ def test_sanic_ui_metrics_and_errors_endpoints() -> None:
     assert "p95" in data
 
     # errors.json should include at least one error record
-    req, res = client.get("/profilis/errors.json")
+    _req, res = client.get("/profilis/errors.json")
     assert res.status == HTTP_OK
     errors = res.json.get("errors") or []
     assert any(e.get("route") == "/boom" for e in errors)
@@ -173,7 +173,7 @@ def test_sanic_exception_records_error_ring() -> None:
     client = SanicTestClient(app)
 
     # Trigger an error route to exercise the adapter's exception handler
-    req, res = client.get("/err")
+    _req, res = client.get("/err")
     assert res.status == HTTP_INTERNAL_SERVER_ERROR
 
     # Give the async collector a moment

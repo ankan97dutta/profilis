@@ -95,10 +95,15 @@ cache_dir = ".mypy_cache"
 sqlite_cache = true
 skip_version_check = true
 
-# Ignore third-party packages that may have syntax issues
+# Skip following into third-party packages that use 3.10+ syntax (match/case)
 [[tool.mypy.overrides]]
 module = "neo4j.*"
-ignore_errors = true
+follow_imports = "skip"
+
+# Skip following into pytest so mypy doesn't parse _pytest (uses match/case, needs 3.10+)
+[[tool.mypy.overrides]]
+module = ["_pytest.*", "pytest.*"]
+follow_imports = "skip"
 
 [project.urls]
 "Homepage" = "https://github.com/ankan97dutta/profilis"

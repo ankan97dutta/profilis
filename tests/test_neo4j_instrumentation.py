@@ -40,9 +40,7 @@ class FakeResultAsync:
 
 def make_collector_sink() -> tuple[AsyncCollector[Any], list[Any]]:
     items: list[Any] = []
-    col: AsyncCollector[Any] = AsyncCollector(
-        lambda b: items.extend(b), queue_size=100, flush_interval=0.02
-    )
+    col: AsyncCollector[Any] = AsyncCollector(items.extend, queue_size=100, flush_interval=0.02)
     return col, items
 
 
@@ -100,7 +98,7 @@ def test_sync_run_exception_emits_error() -> None:
     col.close()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio  # type: ignore[untyped-decorator]
 async def test_async_run_success_records_counters() -> None:
     col, items = make_collector_sink()
     em = Emitter(col)
@@ -129,7 +127,7 @@ async def test_async_run_success_records_counters() -> None:
     col.close()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio  # type: ignore[untyped-decorator]
 async def test_async_run_exception_emits_error() -> None:
     col, items = make_collector_sink()
     em = Emitter(col)

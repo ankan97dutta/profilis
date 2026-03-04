@@ -21,9 +21,7 @@ EXPECTED_MIN_ITEMS = 3
 
 def make_collector_sink() -> tuple[AsyncCollector[Any], list[Any]]:
     items: list[Any] = []
-    col: AsyncCollector[Any] = AsyncCollector(
-        lambda b: items.extend(b), queue_size=100, flush_interval=0.02
-    )
+    col: AsyncCollector[Any] = AsyncCollector(items.extend, queue_size=100, flush_interval=0.02)
     return col, items
 
 

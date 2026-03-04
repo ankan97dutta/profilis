@@ -57,7 +57,7 @@ class FakeFailed:
 def make_collector_sink() -> tuple[AsyncCollector[dict[str, Any]], list[Any]]:
     items: list[Any] = []
     col: AsyncCollector[dict[str, Any]] = AsyncCollector[dict[str, Any]](
-        lambda b: items.extend(b), queue_size=100, flush_interval=0.02
+        items.extend, queue_size=100, flush_interval=0.02
     )
     return col, items
 
