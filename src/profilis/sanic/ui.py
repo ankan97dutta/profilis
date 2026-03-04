@@ -1,19 +1,22 @@
-"""Built-in UI: JSON endpoint + HTML dashboard (Flask).
+"""Built-in UI: JSON endpoints + HTML dashboard (Sanic).
 
 - /metrics.json -> StatsStore snapshot
 - /errors.json -> recent error ring (last N)
 - / -> HTML dashboard with KPIs + sparkline, theme toggle, recent errors table
 - Supports bearer token auth (optional), saves token from `?token` to localStorage
-- Configurable ui_enabled and ui_prefix
+- Configurable ui_prefix (mounted via Sanic Blueprint)
 """
 
 from __future__ import annotations
 
-import json
 from collections import deque
 from dataclasses import asdict, dataclass
+from typing import Any
 
-from flask import Blueprint, Response, abort, request
+from sanic import Blueprint
+from sanic.request import Request
+from sanic.response import HTTPResponse, text
+from sanic.response import json as sanic_json
 
 from profilis.core.stats import StatsStore
 
@@ -101,7 +104,7 @@ _HTML = """<!DOCTYPE html>
 
     const fmt = (n)=> n==null? '—' : (Number.isInteger(n)? n.toString() : n.toFixed(2));
     // Ensure JSON endpoints are resolved relative to the dashboard path,
-    // so both `/profilis` and `/profilis/` work as expected.
+    // so both `/profilis` and `/profilis/`-style mounts work as expected.
     const basePath = (()=>{
       const p = window.location.pathname;
       return p.endsWith('/') ? p : (p + '/');
@@ -248,7 +251,6 @@ Any other information that might be helpful:
       const encodedLabels = encodeURIComponent(labels);
 
       // Open GitHub issues page with pre-filled content and labels
-      // TODO: Update this URL to point to your own repository
       const githubUrl = `https://github.com/ankan97dutta/profilis/issues/new?title=${encodedTitle}&body=${encodedBody}&labels=${encodedLabels}`;
       window.open(githubUrl, '_blank');
     }
@@ -347,38 +349,55 @@ Any other information that might be helpful:
 def make_ui_blueprint(
     stats: StatsStore, *, bearer_token: str | None = None, ui_prefix: str = ""
 ) -> Blueprint:
-    bp = Blueprint("profilis_ui", __name__, url_prefix=ui_prefix)
+    """Create a Sanic Blueprint that serves the Profilis dashboard and JSON endpoints.
 
-    def _check_auth() -> None:
+    Usage:
+        stats = StatsStore()
+        bp = make_ui_blueprint(stats, ui_prefix="/profilis")
+        app.blueprint(bp)
+    """
+    bp = Blueprint("profilis_ui", url_prefix=ui_prefix)
+
+    def _check_auth(request: Request) -> HTTPResponse | None:
         if bearer_token is None:
-            return
-        auth = request.headers.get("Authorization")
+            return None
+        auth = request.headers.get("authorization") or request.headers.get("Authorization")
         if not auth or not auth.startswith("Bearer "):
-            abort(401)
+            return text("Unauthorized", status=401)
         token = auth.split(" ", 1)[1]
         if token != bearer_token:
-            abort(401)
+            return text("Unauthorized", status=401)
+        return None
 
     def _jsonify(
-        data: dict[str, str | int | float | list[dict[str, str | int | None]] | None],
-    ) -> Response:
-        return Response(json.dumps(data), mimetype="application/json")
+        data: dict[str, Any],
+    ) -> HTTPResponse:
+        # Use Sanic's JSON helper to set correct headers.
+        return sanic_json(data)
 
-    @bp.route("/metrics.json")
-    def metrics_json() -> Response:
-        _check_auth()
+    @bp.get("/metrics.json")  # type: ignore[untyped-decorator]
+    async def metrics_json(request: Request) -> HTTPResponse:
+        auth_resp = _check_auth(request)
+        if auth_resp is not None:
+            return auth_resp
         return _jsonify(stats.snapshot())
 
-    @bp.route("/errors.json")
-    def errors_json() -> Response:
-        _check_auth()
+    @bp.get("/errors.json")  # type: ignore[untyped-decorator]
+    async def errors_json(request: Request) -> HTTPResponse:
+        auth_resp = _check_auth(request)
+        if auth_resp is not None:
+            return auth_resp
         ring = get_error_ring()
         empty_list: list[dict[str, str | int | None]] = []
-        return _jsonify({"errors": ring.dump() if ring else empty_list})
+        payload = {"errors": ring.dump() if ring else empty_list}
+        return _jsonify(payload)
 
-    @bp.route("/")
-    def dashboard() -> Response:
-        _check_auth()
-        return Response(_HTML, mimetype="text/html")
+    @bp.get("/")  # type: ignore[untyped-decorator]
+    async def dashboard(request: Request) -> HTTPResponse:
+        auth_resp = _check_auth(request)
+        if auth_resp is not None:
+            return auth_resp
+        # Explicitly set HTML content type so browsers render the dashboard.
+        return HTTPResponse(_HTML, content_type="text/html; charset=utf-8")
 
     return bp

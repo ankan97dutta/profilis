@@ -15,6 +15,7 @@ httpx>=0.24.0
 
 # Sanic integration
 sanic>=23.0
+sanic-testing>=24.6.0
 
 # SQLAlchemy integration
 sqlalchemy>=2.0

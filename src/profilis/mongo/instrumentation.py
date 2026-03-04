@@ -1,4 +1,3 @@
-# src/profilis/mongo/instrumentation.py
 """MongoDB instrumentation (PyMongo + Motor) via pymongo.monitoring.CommandListener.
 
 Records CommandStarted, CommandSucceeded and CommandFailed events and emits

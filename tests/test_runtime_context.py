@@ -30,7 +30,7 @@ def test_context_manager_sets_and_resets_sync() -> None:
     assert get_trace_id() is None and get_span_id() is None
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio  # type: ignore[untyped-decorator]
 async def test_context_propagation_across_awaits() -> None:
     async def task_one() -> None:
         with use_span("tA", "sA"):
@@ -44,7 +44,7 @@ async def test_context_propagation_across_awaits() -> None:
     await asyncio.gather(task_one(), task_two())
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio  # type: ignore[untyped-decorator]
 async def test_context_is_task_local() -> None:
     async def worker(name: str, tval: Optional[str], sval: Optional[str]) -> None:
         with use_span(tval, sval):

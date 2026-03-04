@@ -3,14 +3,18 @@ repos:
     rev: v0.12.10
     hooks:
       - id: ruff
-        args: [--fix]
+        args: [--fix, .]
+        pass_filenames: false
       - id: ruff-format
+        args: [.]
+        pass_filenames: false
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.17.1
     hooks:
       - id: mypy
         additional_dependencies: []
-        args: [--config-file=pyproject.toml, --incremental]
+        args: [--config-file=pyproject.toml, src/, tests/, examples/]
+        pass_filenames: false
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
