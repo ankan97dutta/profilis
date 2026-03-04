@@ -54,7 +54,7 @@ def instrument_sanic_app(  # noqa: PLR0915
     config: SanicConfig | None = None,
     *,
     mount_asgi_app: Callable[..., Awaitable[None]] | None = None,
-    mount_path: str = "/_spyglass",
+    mount_path: str = "/profilis",
 ) -> None:
     """
     Attach Profilis middleware to a Sanic app.
