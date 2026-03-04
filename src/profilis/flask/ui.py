@@ -100,6 +100,12 @@ _HTML = """<!DOCTYPE html>
     function authHeaders(){ const t=localStorage.getItem(tokenKey); return t? {Authorization:'Bearer '+t}: {}; }
 
     const fmt = (n)=> n==null? '—' : (Number.isInteger(n)? n.toString() : n.toFixed(2));
+    // Ensure JSON endpoints are resolved relative to the dashboard path,
+    // so both `/profilis` and `/profilis/` work as expected.
+    const basePath = (()=>{
+      const p = window.location.pathname;
+      return p.endsWith('/') ? p : (p + '/');
+    })();
     let chart;
     let countdown=4;
     async function fetchJSON(path){ const r = await fetch(path,{headers:authHeaders(),cache:'no-cache'}); if(!r.ok) throw new Error('HTTP '+r.status); return await r.json(); }
@@ -111,7 +117,7 @@ _HTML = """<!DOCTYPE html>
     }
     async function refresh(){
       try{
-        const m = await fetchJSON('metrics.json');
+        const m = await fetchJSON(basePath + 'metrics.json');
         // KPIs
         document.getElementById('rps').textContent = fmt(m.rps);
         document.getElementById('err').textContent = fmt(m.error_pct)+'%';
@@ -155,7 +161,7 @@ _HTML = """<!DOCTYPE html>
 
       // Errors table
       try{
-        const errs = await fetchJSON('errors.json');
+        const errs = await fetchJSON(basePath + 'errors.json');
         console.log(`Errors:`, errs);
         const tbody = document.getElementById('errs');
         tbody.innerHTML = errs.errors.map(e=>`<tr><td>${e.route}</td><td>${e.status}</td><td>${e.exception_type||''}</td><td>${relTime(e.ts_ns/1e6)}</td></tr>`).join('');

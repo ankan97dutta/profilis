@@ -1,4 +1,3 @@
-# src/profilis/neo4j/instrumentation.py
 """Neo4j instrumentation (sync + async) — wraps Session.run / Tx.run and AsyncSession.run / AsyncTx.run.
 
 Non-invasive: wraps session/transaction instance methods to preserve semantics.

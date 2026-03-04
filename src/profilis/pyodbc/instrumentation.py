@@ -1,4 +1,3 @@
-# src/profilis/pyodbc/instrumentation.py
 """pyodbc raw wrapper (execute / executemany)
 
 Non-invasive instrumentation: wrap cursor methods on a per-cursor basis.

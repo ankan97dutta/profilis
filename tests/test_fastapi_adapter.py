@@ -1,4 +1,3 @@
-# tests/test_fastapi_adapter.py
 import asyncio
 import time
 from typing import Any

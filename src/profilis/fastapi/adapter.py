@@ -1,4 +1,3 @@
-# src/profilis/fastapi/adapter.py
 """Thin FastAPI adapter on top of the ASGI middleware.
 
 This module provides a convenience function `instrument_fastapi` which registers

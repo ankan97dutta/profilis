@@ -1,4 +1,3 @@
-# File: scripts/demo_exporters.py
 """
 Demo: using AsyncCollector with JSONLExporter and ConsoleExporter.
 

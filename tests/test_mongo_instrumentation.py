@@ -1,4 +1,3 @@
-# tests/test_mongo_instrumentation.py
 import time
 from typing import Any
 

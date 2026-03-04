@@ -1,4 +1,3 @@
-# tests/test_neo4j_instrumentation.py
 import asyncio
 import time
 from typing import Any, Union
