@@ -115,4 +115,4 @@ async def expensive_operation():
 - [Getting Started](../guides/getting-started.md) — Core Profilis usage.
 - [UI Dashboard](../ui/ui.md) — Dashboard features.
 - [FastAPI Adapter](fastapi.md) — ASGI/FastAPI integration.
-- [Exporters](../exporters/) — Output formats.
+- [Exporters](../exporters/jsonl.md) — Output formats.

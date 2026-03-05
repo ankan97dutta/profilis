@@ -114,4 +114,4 @@ Run tests often (e.g. after each Red/Green/Refactor step) so feedback is fast.
 ## Related
 
 - [Contributing](../meta/contributing.md) — How to contribute and what we expect
-- [Architecture](../../architecture/architecture.md) — System design and components
+- [Architecture](../architecture/architecture.md) — System design and components

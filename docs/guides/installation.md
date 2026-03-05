@@ -357,6 +357,6 @@ After installation:
 
 1. [Getting Started](getting-started.md) - Quick setup and basic usage
 2. [Configuration](configuration.md) - Tuning and customization
-3. [Framework Adapters](../adapters/) - Framework-specific integration
-4. [Database Support](../databases/) - Database instrumentation
-5. [Exporters](../exporters/) - Output configuration
+3. [Framework Adapters](../adapters/flask.md) - Framework-specific integration
+4. [Database Support](../databases/sqlalchemy.md) - Database instrumentation
+5. [Exporters](../exporters/jsonl.md) - Output configuration

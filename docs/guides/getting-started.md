@@ -234,7 +234,7 @@ collector.close()
 ## Next Steps
 
 - [Configuration](configuration.md) - Learn about tuning and customization
-- [Framework Adapters](../adapters/) - Explore Flask, FastAPI, and Sanic integration
-- [Database Support](../databases/) - Understand SQLAlchemy and other database integrations
-- [Exporters](../exporters/) - Configure different output formats
-- [Architecture](../architecture/) - Learn about the system design
+- [Framework Adapters](../adapters/flask.md) - Explore Flask, FastAPI, and Sanic integration
+- [Database Support](../databases/sqlalchemy.md) - Understand SQLAlchemy and other database integrations
+- [Exporters](../exporters/jsonl.md) - Configure different output formats
+- [Architecture](../architecture/architecture.md) - Learn about the system design

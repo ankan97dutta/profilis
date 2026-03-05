@@ -109,4 +109,4 @@ async def expensive_handler():
 - [ASGI middleware](../architecture/architecture.md) — Used under the hood; can be used with any ASGI app.
 - [Getting Started](../guides/getting-started.md) — Core Profilis usage.
 - [UI Dashboard](../ui/ui.md) — Dashboard features and configuration.
-- [Exporters](../exporters/) — JSONL and other output formats.
+- [Exporters](../exporters/jsonl.md) — JSONL and other output formats.
