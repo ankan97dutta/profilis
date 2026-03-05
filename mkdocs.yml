@@ -55,6 +55,7 @@ nav:
   - Adapters:
       - Flask: adapters/flask.md
       - FastAPI: adapters/fastapi.md
+      - Sanic: adapters/sanic.md
   - Databases:
       - SQLAlchemy: databases/sqlalchemy.md
       - MongoDB: databases/mongodb.md

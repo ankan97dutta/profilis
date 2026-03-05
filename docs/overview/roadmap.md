@@ -129,7 +129,7 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 - Production hardening
 
 ### 🔄 v1.0.0 — Production Ready (PLANNED)
-**Target**: Q4 2025
+**Target**: Q2 2026
 
 **Planned Features:**
 - **Comprehensive Benchmarks**
