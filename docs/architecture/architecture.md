@@ -393,9 +393,9 @@ In-memory statistics with rolling windows.
 - Better error handling
 
 **v0.3.0:**
-- ASGI framework support
-- WebSocket profiling
-- Advanced async features
+- ASGI middleware (ProfilisASGIMiddleware)
+- FastAPI and Sanic adapters with built-in UI
+- Route detection and configurable sampling
 
 **v0.4.0:**
 - Prometheus integration

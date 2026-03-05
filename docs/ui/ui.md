@@ -178,6 +178,40 @@ app.register_blueprint(ui_bp)
 # Now both profiling and dashboard are available
 ```
 
+### With FastAPI
+
+```python
+from fastapi import FastAPI
+from profilis.fastapi.adapter import instrument_fastapi
+from profilis.fastapi.ui import make_ui_router
+from profilis.core.emitter import Emitter
+from profilis.core.stats import StatsStore
+
+app = FastAPI()
+stats = StatsStore()
+# ... set up collector and emitter, then:
+instrument_fastapi(app, emitter, route_excludes=["/profilis"])
+app.include_router(make_ui_router(stats, prefix="/profilis"))
+# Visit /profilis for the dashboard
+```
+
+### With Sanic
+
+```python
+from sanic import Sanic
+from profilis.sanic.adapter import instrument_sanic_app, SanicConfig
+from profilis.sanic.ui import make_ui_blueprint
+from profilis.core.emitter import Emitter
+from profilis.core.stats import StatsStore
+
+app = Sanic("myapp")
+stats = StatsStore()
+# ... set up collector and emitter, then:
+instrument_sanic_app(app, emitter, SanicConfig())
+app.blueprint(make_ui_blueprint(stats, ui_prefix="/profilis"))
+# Visit /profilis for the dashboard
+```
+
 ### With Custom Stats
 
 ```python

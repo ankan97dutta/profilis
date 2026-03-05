@@ -30,8 +30,8 @@ pip install profilis[all]
 
 **Available Extras:**
 - `flask`: Flask framework integration
-- `fastapi`: FastAPI framework integration (planned for v0.3.0)
-- `sanic`: Sanic framework integration (planned for v0.3.0)
+- `fastapi`: FastAPI framework integration (ASGI middleware + UI router)
+- `sanic`: Sanic framework integration (native middleware + UI blueprint)
 - `sqlalchemy`: SQLAlchemy database instrumentation
 - `mongo`: MongoDB integration with PyMongo
 - `neo4j`: Neo4j graph database integration
@@ -117,6 +117,38 @@ pip install orjson>=3.8
 - Route detection and sampling
 
 **Use Case:** Flask web applications
+
+### FastAPI Integration (`pip install profilis[fastapi]`)
+
+**Dependencies:**
+- Core dependencies
+- `fastapi>=0.110`
+- `starlette>=0.37`
+- `httpx>=0.24.0`
+
+**Features:**
+- Everything from core
+- ASGI middleware for automatic request/response profiling
+- Route template detection (OpenAPI path formats)
+- Optional built-in dashboard via `make_ui_router()`
+- Configurable sampling and route exclusions
+
+**Use Case:** FastAPI and other ASGI applications
+
+### Sanic Integration (`pip install profilis[sanic]`)
+
+**Dependencies:**
+- Core dependencies
+- `sanic>=23.0`
+
+**Features:**
+- Everything from core
+- Native request/response/exception middleware
+- Optional built-in dashboard via `make_ui_blueprint()`
+- Configurable sampling and route exclusions
+- Optional ASGI app mounting for UI (best-effort by Sanic version)
+
+**Use Case:** Sanic web applications
 
 ### SQLAlchemy Integration (`pip install profilis[sqlalchemy]`)
 
@@ -248,7 +280,7 @@ For production deployments:
 
 ```bash
 # Install with specific versions for stability
-pip install profilis[flask,sqlalchemy]==0.1.0
+pip install profilis[flask,sqlalchemy]==0.3.0
 
 # Or use requirements file with pinned versions
 pip install -r requirements-production.txt

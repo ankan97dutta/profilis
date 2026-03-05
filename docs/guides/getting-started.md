@@ -13,6 +13,12 @@ pip install profilis
 # With Flask support
 pip install profilis[flask]
 
+# With FastAPI support
+pip install profilis[fastapi]
+
+# With Sanic support
+pip install profilis[sanic]
+
 # With database support
 pip install profilis[flask,sqlalchemy]
 
@@ -56,6 +62,8 @@ pip install orjson>=3.8
 
 - **`profilis` (core)**: Basic profiling with Emitter and AsyncCollector
 - **`profilis[flask]`**: Core + Flask request/response profiling
+- **`profilis[fastapi]`**: Core + FastAPI/ASGI middleware and UI router
+- **`profilis[sanic]`**: Core + Sanic middleware and UI blueprint
 - **`profilis[sqlalchemy]`**: Core + SQLAlchemy query profiling
 - **`profilis[perf]`**: Core + orjson for faster JSON serialization
 - **`profilis[all]`**: Everything including all frameworks and databases
@@ -96,6 +104,33 @@ def health():
 if __name__ == "__main__":
     app.run(debug=True)
 ```
+
+## Quick Start with FastAPI
+
+For FastAPI (and other ASGI apps), use the FastAPI adapter and optional UI router:
+
+```python
+from fastapi import FastAPI
+from profilis.fastapi.adapter import instrument_fastapi
+from profilis.fastapi.ui import make_ui_router
+from profilis.exporters.jsonl import JSONLExporter
+from profilis.core.async_collector import AsyncCollector
+from profilis.core.emitter import Emitter
+from profilis.core.stats import StatsStore
+
+exporter = JSONLExporter(dir="./logs")
+collector = AsyncCollector(exporter)
+emitter = Emitter(collector)
+stats = StatsStore()
+
+app = FastAPI()
+instrument_fastapi(app, emitter, route_excludes=["/profilis"])
+app.include_router(make_ui_router(stats, prefix="/profilis"))
+# Run with: uvicorn your_module:app --reload
+# Visit http://localhost:8000/profilis for the dashboard
+```
+
+See [FastAPI Adapter](../adapters/fastapi.md) and [Sanic Adapter](../adapters/sanic.md) for more.
 
 ## Function Profiling
 
@@ -173,7 +208,7 @@ with use_span(trace_id=span_id()):
 collector.close()
 ```
 
-## What's Available in v0.1.0
+## What's Available
 
 ### Core Components
 - **AsyncCollector**: Non-blocking event collection with configurable batching
@@ -182,6 +217,8 @@ collector.close()
 
 ### Framework Support
 - **Flask**: Automatic request/response profiling with hooks
+- **FastAPI**: ASGI middleware and built-in UI router (v0.3.0+)
+- **Sanic**: Native middleware and built-in UI blueprint (v0.3.0+)
 - **SQLAlchemy**: Query performance monitoring and instrumentation
 
 ### Exporters
