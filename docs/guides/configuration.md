@@ -109,6 +109,31 @@ profilis = ProfilisFlask(
 )
 ```
 
+### ASGI / Sanic sampling (FastAPI, Starlette, Sanic)
+
+When using `ASGIConfig` (FastAPI/Starlette) or `SanicConfig` (Sanic), you get:
+
+- **Global `sampling_rate`** — Float in `[0.0, 1.0]`. `1.0` = capture all requests; `0.0` = capture none (except 5xx when `always_sample_errors=True`). Values outside this range raise `ValueError`.
+- **Route excludes** — Paths to skip entirely (prefix or exact match). Use the `re:` prefix for regex (e.g. `"re:^/v[12]/"` to exclude `/v1/` and `/v2/`).
+- **Per-route overrides** — `route_overrides`: iterable of `(pattern, rate)`. First matching pattern wins. Use prefix or `re:...` for regex. Example: sample 100% of `/api/critical` while keeping 10% elsewhere.
+- **Always sample 5xx** — With `always_sample_errors=True` (default), responses with status ≥ 500 and requests that raise exceptions are always recorded, regardless of `sampling_rate`.
+- **Deterministic tests** — Pass `random_seed=int` for reproducible sampling, or `rng=callable` that returns a float in `[0, 1)`.
+
+```python
+from profilis.asgi.middleware import ASGIConfig
+
+# Production: 10% global sampling, exclude health/dashboard, always record 5xx
+config = ASGIConfig(
+    sampling_rate=0.1,
+    route_excludes=["/health", "/profilis", "re:^/static/"],
+    route_overrides=[("/api/critical", 1.0), ("/api/", 0.05)],
+    always_sample_errors=True,
+)
+
+# Tests: deterministic sampling
+config_test = ASGIConfig(sampling_rate=0.5, always_sample_errors=True, random_seed=42)
+```
+
 ## Exporter Configuration
 
 ### JSONL Exporter

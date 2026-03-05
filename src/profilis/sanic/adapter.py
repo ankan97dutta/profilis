@@ -18,6 +18,22 @@ from sanic import Sanic
 from profilis.core.emitter import Emitter
 from profilis.runtime import now_ns
 from profilis.runtime.context import get_current_parent_span_id
+from profilis.sampling import (
+    _compile_excludes,
+    _compile_overrides,
+    clamp_sampling_rate,
+    get_effective_rate,
+    make_rng,
+)
+from profilis.sampling import (
+    should_exclude_route as sampling_should_exclude_route,
+)
+from profilis.sampling import (
+    should_record_request as sampling_should_record_request,
+)
+from profilis.sampling import (
+    should_sample_request as sampling_should_sample_request,
+)
 
 log = logging.getLogger("profilis.sanic")
 
@@ -26,27 +42,22 @@ HTTP_INTERNAL_SERVER_ERROR = 500
 
 
 class SanicConfig:
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         *,
         sampling_rate: float = 1.0,
         route_excludes: t.Iterable[str] | None = None,
+        route_overrides: t.Iterable[tuple[str, float]] | None = None,
         always_sample_errors: bool = True,
+        random_seed: int | None = None,
+        rng: t.Callable[[], float] | None = None,
     ) -> None:
-        self.sampling_rate = float(sampling_rate)
+        self.sampling_rate = clamp_sampling_rate(sampling_rate)
         self.route_excludes = list(route_excludes or [])
+        self.route_overrides = list(route_overrides or [])
         self.always_sample_errors = bool(always_sample_errors)
-
-
-def _should_exclude_route(path: str, excludes: t.Iterable[str]) -> bool:
-    if not excludes:
-        return False
-    for pat in excludes:
-        if not pat:
-            continue
-        if path.startswith(pat) or path == pat:
-            return True
-    return False
+        self.random_seed = random_seed
+        self.rng = rng
 
 
 def instrument_sanic_app(  # noqa: PLR0915
@@ -70,18 +81,23 @@ def instrument_sanic_app(  # noqa: PLR0915
     """
 
     cfg = config or SanicConfig()
+    excludes_compiled = _compile_excludes(cfg.route_excludes)
+    overrides_compiled = _compile_overrides(cfg.route_overrides)
+    rng = make_rng(random_seed=cfg.random_seed, rng=cfg.rng)
 
-    # request middleware: set start timestamp and record method/path
+    # request middleware: set start timestamp, sampling decision, method/path
     @app.middleware("request")  # type: ignore[untyped-decorator]
     async def _profilis_request_middleware(request: t.Any) -> None:
         # Only HTTP requests; Sanic uses Request objects for http
         try:
             method = getattr(request, "method", "UNKNOWN")
             path = getattr(request, "path", "/")
-            if _should_exclude_route(path, cfg.route_excludes):
+            if sampling_should_exclude_route(path, excludes_compiled):
                 # mark excluded to short-circuit in response middleware
                 request.ctx._profilis_excluded = True
                 return
+            rate = get_effective_rate(path, overrides_compiled, cfg.sampling_rate)
+            request.ctx._profilis_sampled = sampling_should_sample_request(rate, rng)
             request.ctx._profilis_start_ns = now_ns()
             request.ctx._profilis_method = method
             request.ctx._profilis_path = path
@@ -108,14 +124,9 @@ def instrument_sanic_app(  # noqa: PLR0915
             method = getattr(request.ctx, "_profilis_method", getattr(request, "method", "UNKNOWN"))
             path = getattr(request.ctx, "_profilis_path", getattr(request, "path", "/"))
             route = getattr(request.ctx, "_profilis_route", None)
-            is_error_status = status >= HTTP_INTERNAL_SERVER_ERROR
-            should_record = (
-                (cfg.sampling_rate >= 1.0)
-                or (
-                    0.0 < cfg.sampling_rate < 1.0
-                    and __import__("random").random() <= cfg.sampling_rate
-                )
-                or (cfg.always_sample_errors and is_error_status)
+            sampled = getattr(request.ctx, "_profilis_sampled", False)
+            should_record = sampling_should_record_request(
+                sampled, status, None, cfg.always_sample_errors, HTTP_INTERNAL_SERVER_ERROR
             )
 
             if should_record:
