@@ -200,7 +200,7 @@ def instrument_sanic_app(  # noqa: PLR0915
             # exception into its error ring so the built-in dashboard can
             # surface recent failures.
             try:
-                from profilis.sanic.ui import (  # type: ignore  # noqa: PLC0415
+                from profilis.ui import (  # type: ignore  # noqa: PLC0415
                     ErrorItem,
                     record_error,
                 )
