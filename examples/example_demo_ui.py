@@ -1,4 +1,3 @@
-# File: scripts/demo_ui.py
 """
 Demo: Profilis built-in UI with live data.
 

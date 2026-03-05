@@ -82,32 +82,30 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 - Memory overhead: ~100 bytes per database event
 - Throughput: 100K+ database events/second
 
-### 🔄 v0.3.0 — ASGI Framework Support (PLANNED)
-**Target**: Q4 2025
+### ✅ v0.3.0 — ASGI Framework Support (COMPLETED)
+**Released**: March 2026
 
-**Planned Features:**
+**Delivered Features:**
+- **ASGI Middleware**
+  - Generic `ProfilisASGIMiddleware` for Starlette and any ASGI framework
+  - Configurable sampling, route exclusions, and always-sample-errors
+  - Route template extraction from scope (e.g. path_format)
+
 - **FastAPI Integration**
-  - Native ASGI middleware
-  - Automatic request/response profiling
-  - OpenAPI integration for route detection
+  - `instrument_fastapi()` registers ASGI middleware with FastAPI apps
+  - Automatic request/response profiling and route detection
+  - `make_ui_router()` for built-in dashboard (metrics.json, errors.json, HTML)
 
-- **Sanic Support**
-  - Sanic-specific optimizations
-  - Async request handling
-  - Performance monitoring
-
-- **ASGI Standard**
-  - Generic ASGI middleware
-  - Framework-agnostic profiling
-  - WebSocket support
+- **Sanic Integration**
+  - `instrument_sanic_app()` with native request/response/exception middleware
+  - `make_ui_blueprint()` for built-in dashboard
+  - Optional ASGI app mounting (best-effort by Sanic version)
 
 **Enhancements:**
-- Improved async performance
-- Better error handling for async contexts
-- WebSocket profiling
+- Improved async performance and error handling in ASGI/Sanic contexts
 
 ### 🔄 v0.4.0 — Advanced Features & Resilience (PLANNED)
-**Target**: Q4 2025
+**Target**: Q1 2026
 
 **Planned Features:**
 - **Advanced Sampling**
@@ -131,7 +129,7 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 - Production hardening
 
 ### 🔄 v1.0.0 — Production Ready (PLANNED)
-**Target**: Q4 2025
+**Target**: Q2 2026
 
 **Planned Features:**
 - **Comprehensive Benchmarks**
@@ -156,11 +154,11 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 
 ## Development Priorities
 
-### Immediate (v0.2.0 → v0.3.0)
-1. **ASGI Framework Support**
-   - FastAPI middleware development
-   - Sanic integration
-   - Generic ASGI support
+### Immediate (v0.3.0 → v0.4.0)
+1. **Enhanced Exporters & Observability**
+   - Prometheus exporter
+   - OTLP exporter
+   - Advanced sampling
 
 2. **Database Integrations**
    - Enhanced MongoDB, Neo4j, and pyodbc features
@@ -171,18 +169,13 @@ See GitHub Project: *Profilis – v0 Roadmap*.
    - Reduce memory overhead
    - Improve batching efficiency
 
-### Short-term (v0.3.0 → v0.4.0)
-1. **Enhanced Exporters**
-   - Prometheus exporter
-   - OTLP exporter
-   - Custom exporter framework
-
-2. **Advanced Features**
+### Short-term (v0.4.0 → v1.0.0)
+1. **Advanced Features**
    - Distributed tracing
    - Correlation IDs
    - Advanced sampling
 
-3. **Testing & Quality**
+2. **Testing & Quality**
    - Expand test coverage
    - Performance benchmarking
    - Integration testing

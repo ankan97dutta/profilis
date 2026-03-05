@@ -14,8 +14,8 @@
 Profilis provides drop-in observability across APIs, functions, and database queries with minimal performance impact. It's designed to be:
 
 - **Non blocking**: Async collection with configurable batching and backpressure handling
-- **Framework agnostic**: Works with Flask and custom applications (FastAPI/Sanic planned)
-- **Database aware**: Built-in support for SQLAlchemy (pyodbc/MongoDB/Neo4j planned)
+- **Framework agnostic**: Flask, FastAPI, and Sanic with optional ASGI middleware for any ASGI app
+- **Database aware**: SQLAlchemy (sync & async), MongoDB (PyMongo), Neo4j, and pyodbc
 - **Production ready**: Configurable sampling, error tracking, and multiple export formats
 
 <img width="1126" height="642" alt="Screenshot 2025-09-01 at 12 38 50 PM" src="https://github.com/user-attachments/assets/7c9d541b-4984-4575-92fb-8c0ec48dff55" />
@@ -29,12 +29,13 @@ If you find Profilis helpful for your projects, please consider giving it a star
 ## Features
 
 - **Request Profiling**: Automatic HTTP request/response timing and status tracking
+- **Frameworks**: Flask, FastAPI (ASGI middleware), and Sanic with built-in dashboard (Flask blueprint, FastAPI router, Sanic blueprint)
 - **Function Profiling**: Decorator-based function timing with exception tracking
-- **Database Instrumentation**: SQLAlchemy query performance monitoring with row counts
+- **Database Instrumentation**: SQLAlchemy (sync & async), MongoDB (PyMongo), Neo4j, pyodbc with query/command monitoring
 - **Built-in UI**: Real-time dashboard for monitoring and debugging
 - **Multiple Exporters**: JSONL (with rotation), Console
 - **Runtime Context**: Distributed tracing with trace/span ID management
-- **Configurable Sampling**: Control data collection volume in production
+- **Configurable Sampling**: Control data collection volume (Flask, ASGI, Sanic)
 
 
 ## Installation
@@ -49,6 +50,12 @@ pip install profilis
 
 # With Flask support
 pip install profilis[flask]
+
+# With FastAPI support
+pip install profilis[fastapi]
+
+# With Sanic support
+pip install profilis[sanic]
 
 # With database support
 pip install profilis[flask,sqlalchemy]
@@ -81,6 +88,12 @@ pip install typing_extensions>=4.0
 
 # Flask support
 pip install flask[async]>=3.0
+
+# FastAPI support
+pip install fastapi>=0.110 starlette>=0.37 httpx>=0.24.0
+
+# Sanic support
+pip install sanic>=23.0
 
 # SQLAlchemy support
 pip install sqlalchemy>=2.0 aiosqlite greenlet
@@ -116,9 +129,37 @@ profilis = ProfilisFlask(
 def get_users():
     return {"users": ["alice", "bob"]}
 
-# Start the app
+# Visit /_profilis for the dashboard (if you mount the UI blueprint)
 if __name__ == "__main__":
     app.run(debug=True)
+```
+
+### FastAPI Integration
+
+```python
+from fastapi import FastAPI
+from profilis.fastapi.adapter import instrument_fastapi
+from profilis.fastapi.ui import make_ui_router
+from profilis.exporters.jsonl import JSONLExporter
+from profilis.core.async_collector import AsyncCollector
+from profilis.core.emitter import Emitter
+from profilis.core.stats import StatsStore
+
+exporter = JSONLExporter(dir="./logs", rotate_bytes=1024*1024, rotate_secs=3600)
+collector = AsyncCollector(exporter, queue_size=2048, batch_max=128, flush_interval=0.1)
+emitter = Emitter(collector)
+stats = StatsStore()
+
+app = FastAPI()
+instrument_fastapi(app, emitter, route_excludes=["/profilis"])
+app.include_router(make_ui_router(stats, prefix="/profilis"))
+
+@app.get("/api/users")
+async def get_users():
+    return {"users": ["alice", "bob"]}
+
+# Run with: uvicorn your_module:app --reload
+# Visit http://localhost:8000/profilis for the dashboard
 ```
 
 ### Function Profiling
@@ -176,19 +217,23 @@ collector.close()
 
 ### Built-in Dashboard
 
+Dashboard is available per framework:
+
+- **Flask**: `make_ui_blueprint(stats, ui_prefix="/_profilis")` → `app.register_blueprint(ui_bp)`
+- **FastAPI**: `make_ui_router(stats, prefix="/profilis")` → `app.include_router(router)`
+- **Sanic**: `make_ui_blueprint(stats, ui_prefix="/profilis")` → `app.blueprint(bp)`
+
 ```python
+# Example: Flask
 from flask import Flask
 from profilis.flask.ui import make_ui_blueprint
 from profilis.core.stats import StatsStore
 
 app = Flask(__name__)
-stats = StatsStore()  # 15-minute rolling window
-
-# Mount the dashboard at /_profilis
+stats = StatsStore()
 ui_bp = make_ui_blueprint(stats, ui_prefix="/_profilis")
 app.register_blueprint(ui_bp)
-
-# Visit http://localhost:5000/_profilis to see the dashboard
+# Visit http://localhost:5000/_profilis
 ```
 
 ## Advanced Usage
@@ -316,8 +361,11 @@ Docs are written in Markdown under [`docs/`](./docs) and built with [MkDocs Mate
 
 - **[Getting Started](https://ankan97dutta.github.io/profilis/guides/getting-started/)** - Quick setup and basic usage
 - **[Configuration](https://ankan97dutta.github.io/profilis/guides/configuration/)** - Tuning and customization
-- **[Flask Integration](https://ankan97dutta.github.io/profilis/adapters/flask/)** - Flask adapter documentation
+- **[Flask Integration](https://ankan97dutta.github.io/profilis/adapters/flask/)** - Flask adapter
+- **[FastAPI Integration](https://ankan97dutta.github.io/profilis/adapters/fastapi/)** - FastAPI/ASGI adapter
+- **[Sanic Integration](https://ankan97dutta.github.io/profilis/adapters/sanic/)** - Sanic adapter
 - **[SQLAlchemy Support](https://ankan97dutta.github.io/profilis/databases/sqlalchemy/)** - Database instrumentation
+- **[MongoDB](https://ankan97dutta.github.io/profilis/databases/mongodb/) · [Neo4j](https://ankan97dutta.github.io/profilis/databases/neo4j/) · [pyodbc](https://ankan97dutta.github.io/profilis/databases/pyodbc/)** - Additional databases
 - **[JSONL Exporter](https://ankan97dutta.github.io/profilis/exporters/jsonl/)** - Log file output
 - **[Built-in UI](https://ankan97dutta.github.io/profilis/ui/ui/)** - Dashboard documentation
 - **[Architecture](https://ankan97dutta.github.io/profilis/architecture/architecture/)** - System design
@@ -329,6 +377,45 @@ mkdocs serve
 ```
 
 ## Development
+
+### Setting up the project
+
+1. **Clone and enter the repo**
+   ```bash
+   git clone https://github.com/ankan97dutta/profilis.git
+   cd profilis
+   ```
+
+2. **Create a virtual environment and install in editable mode with dev dependencies**
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate   # Windows: .venv\Scripts\activate
+   pip install -e ".[dev]"
+   ```
+
+3. **Install pre-commit hooks** (optional but recommended)
+   ```bash
+   pre-commit install
+   ```
+
+4. **Run the test suite**
+   ```bash
+   pytest
+   ```
+
+   Use `pytest -v` for verbose output, `pytest path/to/test_file.py` to run a single file, or `pytest -k "test_name"` to run tests matching a pattern. Coverage: `pytest --cov=profilis --cov-report=term-missing`.
+
+### Working with TDD
+
+We encourage **test-driven development (TDD)**:
+
+1. **Red** — Write a failing test that describes the behaviour you want.
+2. **Green** — Implement the minimum code to make the test pass.
+3. **Refactor** — Improve the implementation while keeping tests green.
+
+Run tests frequently (e.g. `pytest` or `pytest tests/ -q`) as you work. See [Development Guidelines](./docs/meta/development-guidelines.md#test-driven-development-tdd) for the full TDD workflow and test layout.
+
+### Branching and commits
 
 - See [Contributing](./docs/meta/contributing.md) and [Development Guidelines](./docs/meta/development-guidelines.md).
 - Branch strategy: trunk‑based (`feat/*`, `fix/*`, `perf/*`, `chore/*`).
@@ -346,7 +433,7 @@ See [Profilis – v0 Roadmap Project](https://github.com/ankan97dutta/profilis/p
 
 - **Email**: [connect@ankandutta.in](mailto:connect@ankandutta.in)
 - **Website**: [https://www.ankandutta.in](https://www.ankandutta.in)
-- **Bogs**: [Signals & Noise](https://blog.ankandutta.in/)
+- **Blog**: [Signals & Noise](https://blog.ankandutta.in/)
 - **GitHub**: [@ankan97dutta](https://github.com/ankan97dutta)
 
 Feel free to reach out if you have questions, suggestions, or would like to contribute to Profilis!

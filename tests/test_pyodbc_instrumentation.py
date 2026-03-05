@@ -1,4 +1,3 @@
-# tests/test_pyodbc_instrumentation.py
 import time
 from typing import Any, Optional
 
@@ -27,7 +26,7 @@ class DummyCursor:
 def test_execute_wrap_records_and_passes_through() -> None:
     received: list[Any] = []
     col: AsyncCollector[dict[str, Any]] = AsyncCollector(
-        lambda b: received.extend(b), queue_size=100, flush_interval=0.05
+        received.extend, queue_size=100, flush_interval=0.05
     )
     em = Emitter(col)
     cfg = PyODBCConfig(
@@ -52,7 +51,7 @@ def test_execute_wrap_records_and_passes_through() -> None:
 def test_executemany_wrap_records_and_passes_through() -> None:
     received: list[Any] = []
     col: AsyncCollector[dict[str, Any]] = AsyncCollector(
-        lambda b: received.extend(b), queue_size=100, flush_interval=0.05
+        received.extend, queue_size=100, flush_interval=0.05
     )
     em = Emitter(col)
     cfg = PyODBCConfig(

@@ -9,6 +9,7 @@ mypy>=1.0
 ruff>=0.1.0
 black>=23.0
 pre-commit>=3.0
+uvicorn>=0.20.0
 
 # JSON handling
 orjson>=3.9.0

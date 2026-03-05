@@ -1,0 +1,13 @@
+# FastAPI integration dependencies for Profilis
+# Install with: pip install -r requirements-fastapi.txt
+
+# Core dependencies
+typing_extensions>=4.0
+
+# FastAPI and ASGI dependencies
+fastapi>=0.110
+starlette>=0.37
+httpx>=0.24.0
+
+# Install the package in editable mode
+-e .

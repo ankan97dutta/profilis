@@ -31,7 +31,7 @@ def test_sparkline_and_rps() -> None:
 def test_emitter_enqueue(monkeypatch: Any) -> None:
     received: list[Any] = []
     col = AsyncCollector[dict[str, Any]](
-        lambda b: received.extend(b), queue_size=32, flush_interval=0.01, batch_max=8
+        received.extend, queue_size=32, flush_interval=0.01, batch_max=8
     )
     em = Emitter(col)
     em.emit_req("/home", 200, 1000)
