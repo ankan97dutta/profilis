@@ -34,6 +34,7 @@ sqlalchemy = ["sqlalchemy>=2.0", "aiosqlite", "greenlet"]
 pyodbc = ["pyodbc"]
 mongo = ["pymongo>=4.3", "motor>=3.3"]
 neo4j = ["neo4j>=5.14"]
+prometheus = ["prometheus_client>=0.19"]
 perf = ["orjson>=3.8"]
 all = [
   "flask[async]>=3.0",
@@ -47,6 +48,7 @@ all = [
   "pyodbc",
   "pymongo>=4.3","motor>=3.3",
   "neo4j>=5.14",
+  "prometheus_client>=0.19",
   "orjson>=3.8"
 ]
 dev = [
@@ -57,12 +59,16 @@ dev = [
   "ruff>=0.1.0",
   "black>=23.0",
   "pre-commit>=3.0",
-  "uvicorn>=0.20.0"
+  "uvicorn>=0.20.0",
+  "prometheus_client>=0.19"
 ]
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.pytest.ini_options]
 addopts = "-q"

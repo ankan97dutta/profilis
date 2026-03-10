@@ -37,7 +37,16 @@ class Emitter:
         ev.update(fn=name, dur_ns=dur_ns, error=error)
         self._collector.enqueue(ev)
 
-    def emit_db(self, query: str, dur_ns: int, rows: int) -> None:
+    def emit_db(
+        self,
+        query: str,
+        dur_ns: int,
+        rows: int,
+        *,
+        db_vendor: str | None = None,
+    ) -> None:
         ev = self._base("DB")
         ev.update(query=query, dur_ns=dur_ns, rows=rows)
+        if db_vendor is not None:
+            ev["db_vendor"] = db_vendor
         self._collector.enqueue(ev)

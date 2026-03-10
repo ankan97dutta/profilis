@@ -79,7 +79,14 @@ def instrument_engine(
             dur = now_ns() - start_ns
             stmt = redact_statement(statement, max_len=max_len) if redact else str(statement)
             rows = getattr(cursor, "rowcount", -1)
-            emitter.emit_db(stmt, dur_ns=dur, rows=int(rows) if rows is not None else -1)
+            _eng = getattr(conn, "engine", None)
+            db_vendor = getattr(getattr(_eng, "dialect", None), "name", None) if _eng else None
+            emitter.emit_db(
+                stmt,
+                dur_ns=dur,
+                rows=int(rows) if rows is not None else -1,
+                db_vendor=db_vendor,
+            )
         finally:
             if hasattr(context, "_profilis_start_ns"):
                 delattr(context, "_profilis_start_ns")
