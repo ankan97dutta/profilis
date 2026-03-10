@@ -63,6 +63,7 @@ nav:
       - pyodbc: databases/pyodbc.md
   - Exporters:
       - JSONL: exporters/jsonl.md
+      - Prometheus: exporters/prometheus.md
   - UI:
       - UI: ui/ui.md
   - Meta:

@@ -397,10 +397,10 @@ In-memory statistics with rolling windows.
 - FastAPI and Sanic adapters with built-in UI
 - Route detection and configurable sampling
 
-**v0.4.0:**
-- Prometheus integration
-- Advanced sampling
-- Resilience features
+**v0.4.0 (delivered):**
+- Prometheus exporter (HTTP/function/DB metrics, `/metrics`, health metrics)
+- Sampling policies (global rate, per-route overrides, route excludes, always-sample 5xx)
+- Resilience (graceful shutdown, disk-full handling, events_dropped/queue_depth)
 
 **v1.0.0:**
 - Enterprise features

@@ -104,29 +104,28 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 **Enhancements:**
 - Improved async performance and error handling in ASGI/Sanic contexts
 
-### 🔄 v0.4.0 — Advanced Features & Resilience (PLANNED)
-**Target**: Q1 2026
+### ✅ v0.4.0 — Sampling, Prometheus & Resilience (COMPLETED)
+**Released**: March 2026
 
-**Planned Features:**
-- **Advanced Sampling**
-  - Adaptive sampling based on load
-  - Route-specific sampling rules
-  - Intelligent sampling strategies
+**Delivered Features:**
+- **Sampling Policies**
+  - Global `sample_rate` (0.0–1.0) for ASGI and Sanic
+  - Per-route overrides and route excludes (prefix or regex, e.g. `re:^/static/`)
+  - Always sample 5xx responses and exceptions
+  - Seedable RNG / custom `rng` for deterministic tests
 
-- **Prometheus Integration**
-  - Native Prometheus metrics
-  - Custom metric definitions
-  - Grafana dashboard templates
+- **Prometheus Exporter**
+  - HTTP: `profilis_http_requests_total`, `profilis_http_request_duration_seconds` (histogram)
+  - Functions: `profilis_function_calls_total`, `profilis_function_duration_seconds` (histogram)
+  - DB: `profilis_db_queries_total`, `profilis_db_query_duration_seconds` (histogram)
+  - Labels: service, instance, worker, route, status, function, db_vendor
+  - `/metrics` endpoint for Flask (`make_metrics_blueprint`) and ASGI (`make_asgi_app`)
+  - Configurable histogram buckets
 
-- **Resilience Features**
-  - Circuit breaker patterns
-  - Graceful degradation
-  - Self-healing capabilities
-
-**Enhancements:**
-- Better error handling
-- Performance optimization
-- Production hardening
+- **Reliability**
+  - Graceful shutdown: best-effort flush with timeout; never block exit
+  - JSONL exporter: disk-full fallback (no-op writer + warn once)
+  - Health metrics: `profilis_events_dropped_total`, `profilis_queue_depth` via `register_collector_health_metrics()`
 
 ### 🔄 v1.0.0 — Production Ready (PLANNED)
 **Target**: Q2 2026
@@ -154,11 +153,10 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 
 ## Development Priorities
 
-### Immediate (v0.3.0 → v0.4.0)
+### Immediate (v0.4.0 → v0.5.0)
 1. **Enhanced Exporters & Observability**
-   - Prometheus exporter
    - OTLP exporter
-   - Advanced sampling
+   - Grafana dashboard templates for Prometheus metrics
 
 2. **Database Integrations**
    - Enhanced MongoDB, Neo4j, and pyodbc features
