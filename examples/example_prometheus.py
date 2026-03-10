@@ -28,6 +28,7 @@ from profilis.exporters.console import ConsoleExporter
 from profilis.exporters.prometheus import (
     PrometheusExporter,
     make_metrics_blueprint,
+    register_collector_health_metrics,
 )
 from profilis.flask.adapter import ProfilisFlask
 
@@ -53,6 +54,7 @@ def sink(batch: list[dict[str, Any]]) -> None:
 
 
 collector = AsyncCollector(sink, queue_size=256, flush_interval=0.2, batch_max=64)
+register_collector_health_metrics(registry, collector)
 emitter = Emitter(collector)
 
 # ------------------- Flask app -------------------

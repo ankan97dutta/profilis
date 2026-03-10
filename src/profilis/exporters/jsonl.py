@@ -10,10 +10,12 @@ Design:
 from __future__ import annotations
 
 import contextlib
+import errno
 import json
 import os
 import threading
 import time
+import warnings
 from collections.abc import Iterable
 from datetime import datetime
 from typing import Any, BinaryIO, cast
@@ -48,6 +50,7 @@ class JSONLExporter:
         self._fh: BinaryIO | None = None
         self._opened_at = 0.0
         self._bytes = 0
+        self._disk_full_noop = False
         self._open_active()
 
     # -------- sink interface (AsyncCollector calls this) --------
@@ -60,16 +63,29 @@ class JSONLExporter:
         newline = bytes([10])
 
         with self._lock:
-            self._maybe_rotate_locked()
-            fh = self._fh
-            assert fh is not None
-            for obj in batch:
-                b = enc(obj)
-                fh.write(b)
-                fh.write(newline)
-                self._bytes += len(b) + 1
-            fh.flush()
-            self._maybe_rotate_locked()  # rotate if large batch pushed us over
+            if self._disk_full_noop:
+                return
+            try:
+                self._maybe_rotate_locked()
+                fh = self._fh
+                assert fh is not None
+                for obj in batch:
+                    b = enc(obj)
+                    fh.write(b)
+                    fh.write(newline)
+                    self._bytes += len(b) + 1
+                fh.flush()
+                self._maybe_rotate_locked()
+            except OSError as e:
+                if e.errno in (errno.ENOSPC, errno.EDQUOT):
+                    self._disk_full_noop = True
+                    warnings.warn(
+                        "JSONLExporter: disk full (ENOSPC/EDQUOT); writes are now no-op until restart.",
+                        UserWarning,
+                        stacklevel=0,
+                    )
+                else:
+                    raise
 
     def close(self) -> None:
         with self._lock:

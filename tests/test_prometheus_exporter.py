@@ -1,19 +1,22 @@
-"""Tests for Prometheus exporter: bucket math and scrape smoke."""
+"""Tests for Prometheus exporter: bucket math, scrape smoke, and health metrics."""
 
 from __future__ import annotations
 
+import time
 from typing import Any, cast
 
 import pytest
 
 pytest.importorskip("prometheus_client")
 
+from profilis.core.async_collector import AsyncCollector
 from profilis.exporters.prometheus import (
     DEFAULT_BUCKETS,
     PrometheusExporter,
     _ns_to_seconds,
     make_asgi_app,
     make_metrics_blueprint,
+    register_collector_health_metrics,
 )
 
 # --- Bucket math ---
@@ -144,3 +147,35 @@ def test_make_metrics_blueprint_route_metrics() -> None:
     resp = app.test_client().get("/metrics")
     assert resp.status_code == 200  # noqa: PLR2004
     assert "profilis_http_requests_total" in resp.get_data(as_text=True)
+
+
+def test_health_metrics_dropped_and_queue_depth() -> None:
+    """Verify profilis_events_dropped_total and profilis_queue_depth appear and reflect collector state."""
+    from prometheus_client import CollectorRegistry, generate_latest  # noqa: PLC0415
+
+    registry = CollectorRegistry()
+    received: list[list[int]] = []
+
+    def sink(batch: list[int]) -> None:
+        received.append(batch)
+        time.sleep(0.02)
+
+    col = AsyncCollector(
+        sink,
+        queue_size=8,
+        flush_interval=0.5,
+        batch_max=4,
+    )
+    register_collector_health_metrics(registry, col)
+    for i in range(20):
+        col.enqueue(i)
+    time.sleep(0.1)
+    body = generate_latest(registry).decode()
+    assert "profilis_events_dropped_total" in body
+    assert "profilis_queue_depth" in body
+    assert col.dropped_oldest > 0
+    col.close()
+    body2 = generate_latest(registry).decode()
+    assert "profilis_events_dropped_total" in body2
+    assert "profilis_queue_depth" in body2
+    assert "profilis_queue_depth 0" in body2 or "profilis_queue_depth 0.0" in body2
