@@ -133,10 +133,17 @@ def _get_row_count(cursor: Any) -> int:
         return -1
 
 
-def _emit_db_metrics(emitter: Emitter, stmt: str, dur: int, rows: int) -> None:
+def _emit_db_metrics(
+    emitter: Emitter,
+    stmt: str,
+    dur: int,
+    rows: int,
+    *,
+    db_vendor: str | None = None,
+) -> None:
     """Emit DB metrics, suppressing any exceptions."""
     with contextlib.suppress(Exception):
-        emitter.emit_db(stmt, dur_ns=dur, rows=rows)
+        emitter.emit_db(stmt, dur_ns=dur, rows=rows, db_vendor=db_vendor)
 
 
 def _emit_db_meta(emitter: Emitter, config: PyODBCConfig, exec_info: DBExecutionInfo) -> None:
@@ -177,7 +184,7 @@ def _create_wrapped_execute(
             dur = now_ns() - start
             stmt = _format_sql_statement(sql, config)
             rows = _get_row_count(cursor)
-            _emit_db_metrics(emitter, stmt, dur, rows)
+            _emit_db_metrics(emitter, stmt, dur, rows, db_vendor=config.vendor_label)
             exec_info = DBExecutionInfo(stmt=stmt, params=params, dur=dur, rows=rows, exc=exc)
             _emit_db_meta(emitter, config, exec_info)
 
@@ -204,7 +211,7 @@ def _create_wrapped_executemany(
             dur = now_ns() - start
             stmt = _format_sql_statement(sql, config)
             rows = _get_row_count(cursor)
-            _emit_db_metrics(emitter, stmt, dur, rows)
+            _emit_db_metrics(emitter, stmt, dur, rows, db_vendor=config.vendor_label)
             exec_info = DBExecutionInfo(stmt=stmt, params=params_seq, dur=dur, rows=rows, exc=exc)
             _emit_db_meta(emitter, config, exec_info)
 

@@ -147,9 +147,12 @@ class ProfilisCommandListener(CommandListener):
             }
             # Emit a short metric (like other adapters) and enqueue the meta
             with contextlib.suppress(Exception):
-                # Keep compatibility with previous Emitter.emit_db(stmt, dur_ns, rows)
-                # rows unknown for Mongo; supply -1
-                self._emitter.emit_db(target, dur_ns=dur, rows=-1)
+                self._emitter.emit_db(
+                    target,
+                    dur_ns=dur,
+                    rows=-1,
+                    db_vendor=self._cfg.vendor_label,
+                )
             with contextlib.suppress(Exception):
                 self._emitter._collector.enqueue(meta)
         except Exception:
@@ -187,7 +190,12 @@ class ProfilisCommandListener(CommandListener):
                 "ts_ns": now_ns(),
             }
             with contextlib.suppress(Exception):
-                self._emitter.emit_db(target, dur_ns=dur, rows=-1)
+                self._emitter.emit_db(
+                    target,
+                    dur_ns=dur,
+                    rows=-1,
+                    db_vendor=self._cfg.vendor_label,
+                )
             with contextlib.suppress(Exception):
                 self._emitter._collector.enqueue(meta)
         except Exception:

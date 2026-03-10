@@ -43,7 +43,7 @@ Attaches Profilis request, response, and exception middleware to your Sanic app 
 
 - **Request/response timing** — Duration and status code are recorded.
 - **Exception handling** — Server errors and unhandled exceptions are recorded with error info.
-- **Config** — `SanicConfig(sampling_rate=1.0, route_excludes=..., always_sample_errors=True)`.
+- **Config** — `SanicConfig(sampling_rate=1.0, route_excludes=..., route_overrides=..., always_sample_errors=True, random_seed=..., rng=...)`. Route excludes support prefix or regex (`"re:..."`). Per-route overrides: `route_overrides=[(pattern, rate), ...]`. Use `random_seed` or `rng` for deterministic tests.
 - **Optional ASGI UI mount** — You can pass `mount_asgi_app` and `mount_path` to mount an ASGI app (e.g. dashboard) if your Sanic version supports it; otherwise use the blueprint below.
 
 ```python
@@ -53,8 +53,9 @@ instrument_sanic_app(
     app,
     emitter,
     SanicConfig(
-        sampling_rate=1.0,
-        route_excludes=["/profilis", "/health"],
+        sampling_rate=0.1,
+        route_excludes=["/profilis", "/health", "re:^/static/"],
+        route_overrides=[("/api/critical", 1.0)],
         always_sample_errors=True,
     ),
 )

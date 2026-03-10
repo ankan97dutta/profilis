@@ -4,6 +4,77 @@ import time
 from profilis.core.async_collector import AsyncCollector
 
 
+def test_queue_depth_property() -> None:
+    received: list[list[int]] = []
+
+    def sink(batch: list[int]) -> None:
+        received.append(batch)
+
+    col = AsyncCollector(sink, queue_size=10, flush_interval=1.0, batch_max=5)
+    assert col.queue_depth == 0
+    col.enqueue(1)
+    col.enqueue(2)
+    # Flush may not have run yet
+    assert col.queue_depth in (0, 1, 2)
+    time.sleep(0.15)
+    col.close()
+    assert col.queue_depth == 0
+
+
+def test_exporter_raise_increments_flush_errors_and_disables_sink() -> None:
+    """Fault injection: sink that always raises; collector disables sink after N failures."""
+    call_count = 0
+
+    def failing_sink(batch: list[int]) -> None:
+        nonlocal call_count
+        call_count += 1
+        raise RuntimeError("simulated exporter failure")
+
+    col = AsyncCollector(
+        failing_sink,
+        queue_size=20,
+        flush_interval=0.03,
+        batch_max=5,
+        max_consecutive_sink_failures=3,
+    )
+    for i in range(30):
+        col.enqueue(i)
+    time.sleep(0.25)
+    min_failures = 3  # matches max_consecutive_sink_failures
+    assert col.flush_errors >= min_failures
+    assert col._sink_disabled
+    # After disable, further flushes use noop so no more exceptions
+    col.close()
+    assert call_count >= min_failures
+
+
+def test_graceful_shutdown_respects_deadline() -> None:
+    """close(timeout=...) returns within timeout even if sink blocks."""
+    block_until = threading.Event()
+    sink_called = 0
+
+    def blocking_sink(batch: list[int]) -> None:
+        nonlocal sink_called
+        sink_called += len(batch)
+        block_until.wait(timeout=5.0)
+
+    col = AsyncCollector(
+        blocking_sink,
+        queue_size=50,
+        flush_interval=10.0,
+        batch_max=10,
+    )
+    for i in range(25):
+        col.enqueue(i)
+    t0 = time.monotonic()
+    col.close(timeout=0.15)
+    elapsed = time.monotonic() - t0
+    max_acceptable_block_s = 0.5
+    assert elapsed < max_acceptable_block_s, "close() must not block long after timeout"
+    # Some items may have been processed before first blocking flush
+    assert sink_called >= 0
+
+
 def test_non_blocking_and_drop_oldest_under_burst() -> None:
     received = []
     lock = threading.Lock()

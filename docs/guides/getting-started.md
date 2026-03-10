@@ -224,6 +224,7 @@ collector.close()
 ### Exporters
 - **JSONL**: Rotating log files with configurable retention
 - **Console**: Pretty-printed output for development
+- **Prometheus**: Counters and histograms for HTTP, functions, and DB; `/metrics` endpoint (v0.4.0+)
 
 ### UI
 - **Built-in Dashboard**: Real-time metrics, error tracking, and performance visualization
@@ -236,5 +237,5 @@ collector.close()
 - [Configuration](configuration.md) - Learn about tuning and customization
 - [Framework Adapters](../adapters/flask.md) - Explore Flask, FastAPI, and Sanic integration
 - [Database Support](../databases/sqlalchemy.md) - Understand SQLAlchemy and other database integrations
-- [Exporters](../exporters/jsonl.md) - Configure different output formats
+- [Exporters](../exporters/jsonl.md) - Configure JSONL, Console, and [Prometheus](../exporters/prometheus.md) output
 - [Architecture](../architecture/architecture.md) - Learn about the system design

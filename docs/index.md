@@ -7,7 +7,7 @@ A high‑performance, non‑blocking profiler for Python web applications.
 - **Frameworks**: Flask ✅, FastAPI ✅, Sanic ✅
 - **Databases**: SQLAlchemy ✅ (sync & async), MongoDB ✅ (PyMongo), Neo4j ✅ (sync & async), pyodbc ✅ (raw cursor wrapper)
 - **UI**: Built‑in, real-time dashboard ✅
-- **Exporters**: JSONL (rotating) ✅, Console ✅, Prometheus (planned v0.4.0), OTLP (planned v0.4.0)
+- **Exporters**: JSONL (rotating) ✅, Console ✅, Prometheus ✅, OTLP (planned)
 - **Performance**: ≤15µs per event, 100K+ events/second
 
 ## Quick start (Flask)
@@ -69,6 +69,12 @@ app.include_router(make_ui_router(stats, prefix="/profilis"))
 # Visit /profilis for the dashboard
 ```
 
+## What's New in v0.4.0
+
+- ✅ **Sampling Policies**: Global `sample_rate`, per-route overrides and regex-based route exclusions for ASGI and Sanic; always-sample 5xx responses; seedable RNG for deterministic tests
+- ✅ **Prometheus Exporter**: HTTP/function/DB counters and histograms (`profilis_http_requests_total`, `profilis_http_request_duration_seconds`, etc.); `/metrics` endpoint for Flask and ASGI; configurable buckets and labels (service, instance, worker, route, status, db_vendor)
+- ✅ **Reliability**: Graceful shutdown with best-effort flush and timeout; JSONL exporter disk-full handling (no-op + warn once); health metrics `profilis_events_dropped_total` and `profilis_queue_depth` via `register_collector_health_metrics()`
+
 ## What's New in v0.3.0
 
 - ✅ **ASGI Middleware**: Generic ASGI middleware (`ProfilisASGIMiddleware`) for Starlette and any ASGI framework
@@ -105,6 +111,6 @@ app.include_router(make_ui_router(stats, prefix="/profilis"))
 - [MongoDB Support](databases/mongodb.md) - MongoDB/PyMongo instrumentation
 - [Neo4j Support](databases/neo4j.md) - Neo4j graph database profiling
 - [pyodbc Support](databases/pyodbc.md) - pyodbc raw cursor instrumentation
-- [Exporters](exporters/jsonl.md) - JSONL and Console exporters
+- [Exporters](exporters/jsonl.md) - JSONL, Console, and [Prometheus](exporters/prometheus.md) exporters
 - [Architecture](architecture/architecture.md) - System design and components
 - [UI Dashboard](ui/ui.md) - Built-in monitoring interface

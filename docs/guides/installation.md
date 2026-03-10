@@ -36,6 +36,7 @@ pip install profilis[all]
 - `mongo`: MongoDB integration with PyMongo
 - `neo4j`: Neo4j graph database integration
 - `pyodbc`: pyodbc database instrumentation with raw cursor wrapper
+- `prometheus`: Prometheus exporter (counters/histograms + `/metrics` endpoint)
 - `perf`: Performance optimization with orjson
 - `all`: All available integrations
 - `dev`: Development dependencies
@@ -280,7 +281,7 @@ For production deployments:
 
 ```bash
 # Install with specific versions for stability
-pip install profilis[flask,sqlalchemy]==0.3.0
+pip install profilis[flask,sqlalchemy]==0.4.0
 
 # Or use requirements file with pinned versions
 pip install -r requirements-production.txt

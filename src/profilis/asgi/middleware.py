@@ -5,7 +5,7 @@ Features:
 - Resolves route path from scope['route'].path_format when available
 - Captures method, path/route, status, latency (ns), exception type when present
 - Uses profilis runtime context to allow trace/span propagation
-- Configurable sampling, route excludes, always-sample-errors
+- Configurable sampling, route excludes (prefix/regex), per-route overrides, always-sample-errors (5xx)
 """
 
 from __future__ import annotations
@@ -14,10 +14,25 @@ import contextlib
 import traceback
 import typing as t
 from dataclasses import dataclass
-from random import random
 
 from profilis.core.emitter import Emitter
 from profilis.runtime import get_current_parent_span_id, now_ns
+from profilis.sampling import (
+    _compile_excludes,
+    _compile_overrides,
+    clamp_sampling_rate,
+    get_effective_rate,
+    make_rng,
+)
+from profilis.sampling import (
+    should_exclude_route as sampling_should_exclude_route,
+)
+from profilis.sampling import (
+    should_record_request as sampling_should_record_request,
+)
+from profilis.sampling import (
+    should_sample_request as sampling_should_sample_request,
+)
 
 if t.TYPE_CHECKING:
     from starlette.types import ASGIApp, Message, Receive, Scope, Send
@@ -40,34 +55,31 @@ class RequestInfo:
 
 
 class ASGIConfig:
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         *,
         sampling_rate: float = 1.0,
         route_excludes: t.Iterable[str] | None = None,
+        route_overrides: t.Iterable[tuple[str, float]] | None = None,
         always_sample_errors: bool = True,
+        random_seed: int | None = None,
+        rng: t.Callable[[], float] | None = None,
     ) -> None:
         """
         sampling_rate: float in [0.0, 1.0] probability of capturing a request.
-                       1.0 captures all; 0.0 captures none (except errors if always_sample_errors).
-        route_excludes: iterable of route prefixes or exact strings to skip (e.g. '/static', '/health').
-        always_sample_errors: if True, requests that raise exceptions or yield status >=500 are always recorded.
+                       1.0 captures all; 0.0 captures none (except 5xx if always_sample_errors).
+        route_excludes: iterable of route prefixes or exact strings to skip; use "re:..." for regex.
+        route_overrides: iterable of (pattern, rate) for per-route sampling; first match wins; "re:..." for regex.
+        always_sample_errors: if True, 5xx and exceptions are always recorded.
+        random_seed: optional seed for deterministic sampling (tests).
+        rng: optional callable () -> float in [0,1) for deterministic tests; overrides random_seed if set.
         """
-        self.sampling_rate = float(sampling_rate)
+        self.sampling_rate = clamp_sampling_rate(sampling_rate)
         self.route_excludes = list(route_excludes or [])
+        self.route_overrides = list(route_overrides or [])
         self.always_sample_errors = bool(always_sample_errors)
-
-
-def _should_exclude_route(route: str, excludes: t.Iterable[str]) -> bool:
-    if not excludes:
-        return False
-    for pat in excludes:
-        if not pat:
-            continue
-        # prefix match first for convenience; also allow exact match
-        if route.startswith(pat) or route == pat:
-            return True
-    return False
+        self.random_seed = random_seed
+        self.rng = rng
 
 
 class ProfilisASGIMiddleware:
@@ -84,6 +96,9 @@ class ProfilisASGIMiddleware:
         self.app = app
         self.emitter = emitter
         self.cfg = config or ASGIConfig()
+        self._excludes_compiled = _compile_excludes(self.cfg.route_excludes)
+        self._overrides_compiled = _compile_overrides(self.cfg.route_overrides)
+        self._rng = make_rng(random_seed=self.cfg.random_seed, rng=self.cfg.rng)
 
     def _extract_request_info(self, scope: Scope) -> tuple[str, str | None, str]:
         """Extract method, route, and path from ASGI scope."""
@@ -98,22 +113,21 @@ class ProfilisASGIMiddleware:
         path: str = str(route or scope.get("path", "/"))
         return method, route, path
 
-    def _should_sample_request(self) -> bool:
-        """Determine if this request should be sampled."""
-        return (
-            (random() <= self.cfg.sampling_rate)
-            if (0.0 < self.cfg.sampling_rate < 1.0)
-            else (self.cfg.sampling_rate >= 1.0)
-        )
+    def _should_sample_request(self, path: str) -> bool:
+        """Determine if this request should be sampled (uses per-route rate when overrides match)."""
+        rate = get_effective_rate(path, self._overrides_compiled, self.cfg.sampling_rate)
+        return sampling_should_sample_request(rate, self._rng)
 
     def _should_record_request(
         self, sampled: bool, status_code: int | None, error_info: dict[str, str] | None
     ) -> bool:
-        """Determine if this request should be recorded."""
-        sc = int(status_code or 0)
-        is_error_status = sc >= HTTP_ERROR_STATUS_THRESHOLD
-        return sampled or (
-            self.cfg.always_sample_errors and (error_info is not None or is_error_status)
+        """Determine if this request should be recorded (sampled or 5xx when always_sample_errors)."""
+        return sampling_should_record_request(
+            sampled,
+            status_code,
+            error_info,
+            self.cfg.always_sample_errors,
+            HTTP_ERROR_STATUS_THRESHOLD,
         )
 
     def _create_payload(
@@ -177,13 +191,13 @@ class ProfilisASGIMiddleware:
         # Extract request information
         method, route, path = self._extract_request_info(scope)
 
-        # Check if route should be excluded
-        if _should_exclude_route(path, self.cfg.route_excludes):
+        # Check if route should be excluded (prefix or regex)
+        if sampling_should_exclude_route(path, self._excludes_compiled):
             await self.app(scope, receive, send)
             return
 
-        # Determine sampling
-        sampled = self._should_sample_request()
+        # Determine sampling (global or per-route override)
+        sampled = self._should_sample_request(path)
 
         # Create send wrapper to capture status
         status_code: int | None = None

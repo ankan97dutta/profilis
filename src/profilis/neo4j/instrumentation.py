@@ -169,7 +169,12 @@ def _wrap_sync_callable(
                 "ts_ns": now_ns(),
             }
             with contextlib.suppress(Exception):
-                emitter.emit_db(stmt_preview, dur_ns=dur, rows=-1)
+                emitter.emit_db(
+                    stmt_preview,
+                    dur_ns=dur,
+                    rows=-1,
+                    db_vendor=cfg.vendor_label,
+                )
             with contextlib.suppress(Exception):
                 emitter._collector.enqueue(meta)
 
@@ -239,7 +244,12 @@ def _wrap_async_callable(
                 "ts_ns": now_ns(),
             }
             with contextlib.suppress(Exception):
-                emitter.emit_db(stmt_preview, dur_ns=dur, rows=-1)
+                emitter.emit_db(
+                    stmt_preview,
+                    dur_ns=dur,
+                    rows=-1,
+                    db_vendor=cfg.vendor_label,
+                )
             with contextlib.suppress(Exception):
                 emitter._collector.enqueue(meta)
 

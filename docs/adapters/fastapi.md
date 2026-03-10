@@ -39,8 +39,10 @@ Registers the Profilis ASGI middleware with your FastAPI app so every HTTP reque
 
 - **Automatic request/response timing** — Duration and status code are captured from the ASGI lifecycle.
 - **Route detection** — Uses Starlette/FastAPI route info so you see path templates (e.g. `/api/users/{id}`) instead of raw paths when available.
-- **Route exclusions** — Skip paths like the dashboard or health checks via `route_excludes`.
-- **Config** — Optional `ASGIConfig(sampling_rate=1.0, route_excludes=..., always_sample_errors=True)` from `profilis.asgi.middleware`.
+- **Route exclusions** — Skip paths via `route_excludes` (prefix or exact). Use `"re:..."` for regex (e.g. `"re:^/v1/"`).
+- **Per-route overrides** — `route_overrides`: list of `(pattern, rate)`; first match wins. Lets you sample 100% of critical paths while keeping a lower global rate.
+- **Always sample 5xx** — With `always_sample_errors=True` (default), 5xx and exceptions are always recorded.
+- **Config** — Optional `ASGIConfig(sampling_rate=1.0, route_excludes=..., route_overrides=..., always_sample_errors=True, random_seed=..., rng=...)` from `profilis.asgi.middleware`. Use `random_seed` or `rng` for deterministic tests.
 
 ```python
 from profilis.asgi.middleware import ASGIConfig
@@ -49,7 +51,12 @@ from profilis.fastapi.adapter import instrument_fastapi
 instrument_fastapi(
     app,
     emitter,
-    config=ASGIConfig(sampling_rate=1.0, always_sample_errors=True),
+    config=ASGIConfig(
+        sampling_rate=0.1,
+        route_excludes=["/profilis", "/health", "re:^/static/"],
+        route_overrides=[("/api/critical", 1.0)],
+        always_sample_errors=True,
+    ),
     route_excludes=["/profilis", "/health"],
 )
 ```
