@@ -4,6 +4,8 @@ Metrics:
 - HTTP: profilis_http_requests_total, profilis_http_request_duration_seconds
 - Functions: profilis_function_calls_total, profilis_function_duration_seconds
 - DB: profilis_db_queries_total, profilis_db_query_duration_seconds
+- Collector health (optional): profilis_events_dropped_total, profilis_queue_depth
+  Use register_collector_health_metrics(registry, collector) to expose them.
 
 Labels: service, instance, worker, route, status (HTTP), function (FN), db_vendor (DB).
 Buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10] seconds.
@@ -25,16 +27,20 @@ from typing import Any
 
 try:
     from prometheus_client import CollectorRegistry, Counter, Histogram
+    from prometheus_client.core import CounterMetricFamily, GaugeMetricFamily
 except ImportError:  # pragma: no cover
     CollectorRegistry = None  # type: ignore[misc, assignment]
     Counter = None  # type: ignore[misc, assignment]
     Histogram = None  # type: ignore[misc, assignment]
+    CounterMetricFamily = None  # type: ignore[misc, assignment]
+    GaugeMetricFamily = None  # type: ignore[misc, assignment]
 
 __all__ = [
     "DEFAULT_BUCKETS",
     "PrometheusExporter",
     "make_asgi_app",
     "make_metrics_blueprint",
+    "register_collector_health_metrics",
 ]
 
 # Histogram buckets in seconds (issue #17)
@@ -172,6 +178,43 @@ class PrometheusExporter:
                 continue
             with contextlib.suppress(Exception):
                 self._process_event(ev)
+
+
+def register_collector_health_metrics(registry: Any, collector: Any) -> None:
+    """Register health metrics for an AsyncCollector: profilis_events_dropped_total, profilis_queue_depth.
+
+    Call after creating your AsyncCollector and pass the same registry used for PrometheusExporter:
+      collector = AsyncCollector(sink, ...)
+      register_collector_health_metrics(registry, collector)
+    """
+    _ensure_prometheus()
+    if CounterMetricFamily is None or GaugeMetricFamily is None:
+        raise ImportError(
+            "prometheus_client is required for health metrics. "
+            "Install with: pip install profilis[prometheus]"
+        )
+
+    class _CollectorHealthCollector:
+        def __init__(self, col: Any) -> None:
+            self._col = col
+
+        def collect(self) -> Any:
+            # Scrape-time values; collector must have queue_depth and dropped_oldest
+            depth = self._col.queue_depth if hasattr(self._col, "queue_depth") else 0
+            dropped = getattr(self._col, "dropped_oldest", 0)
+            yield GaugeMetricFamily(
+                "profilis_queue_depth",
+                "Current number of events in the collector buffer",
+                value=depth,
+            )
+            c = CounterMetricFamily(
+                "profilis_events_dropped_total",
+                "Total events dropped (queue full, drop-oldest)",
+            )
+            c.add_metric([], dropped)
+            yield c
+
+    registry.register(_CollectorHealthCollector(collector))
 
 
 def make_asgi_app(registry: Any = None) -> Any:
