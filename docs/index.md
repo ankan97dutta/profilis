@@ -4,10 +4,10 @@ A high‑performance, non‑blocking profiler for Python web applications.
 
 ## Features
 
-- **Frameworks**: Flask [x], FastAPI [x], Sanic [x]
-- **Databases**: SQLAlchemy [x] (sync & async), MongoDB [x] (PyMongo), Neo4j [x] (sync & async), pyodbc [x] (raw cursor wrapper)
-- **UI**: Built-in, real-time dashboard [x]
-- **Exporters**: JSONL (rotating) [x], Console [x], Prometheus [x], OTLP (planned)
+- **Frameworks**: Flask, FastAPI, Sanic
+- **Databases**: SQLAlchemy (sync & async), MongoDB (PyMongo), Neo4j (sync & async), pyodbc (raw cursor wrapper)
+- **UI**: Built-in, real-time dashboard
+- **Exporters**: JSONL (rotating), Console, Prometheus, OTLP (planned)
 - **Performance**: ≤15µs per event, 100K+ events/second
 
 ## Quick start (Flask)

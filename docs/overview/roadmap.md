@@ -4,43 +4,43 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 
 ## Version Status
 
-### [x] v0.1.0 — Core + Flask + SQLAlchemy + UI (COMPLETED)
+### v0.1.0 — Core + Flask + SQLAlchemy + UI (COMPLETED)
 **Released**: September 2025
 
 **Delivered Features:**
 - **Core Profiling Engine**
-  - AsyncCollector with configurable batching and backpressure handling
-  - Emitter for high-performance event creation (≤15µs per event)
-  - Runtime context management with trace/span ID support
-  - Non-blocking architecture with configurable queue sizes
+    - AsyncCollector with configurable batching and backpressure handling
+    - Emitter for high-performance event creation (≤15µs per event)
+    - Runtime context management with trace/span ID support
+    - Non-blocking architecture with configurable queue sizes
 
 - **Flask Integration**
-  - Automatic request/response profiling with hooks
-  - Configurable sampling and route exclusion
-  - Exception tracking and error reporting
-  - Bytes in/out monitoring (best-effort)
+    - Automatic request/response profiling with hooks
+    - Configurable sampling and route exclusion
+    - Exception tracking and error reporting
+    - Bytes in/out monitoring (best-effort)
 
 - **SQLAlchemy Instrumentation**
-  - Automatic query profiling with microsecond precision
-  - Query redaction for security
-  - Row count tracking
-  - Async engine support
+    - Automatic query profiling with microsecond precision
+    - Query redaction for security
+    - Row count tracking
+    - Async engine support
 
 - **Built-in Dashboard**
-  - Real-time metrics visualization
-  - Error tracking and display
-  - Performance trend analysis
-  - 15-minute rolling window statistics
+    - Real-time metrics visualization
+    - Error tracking and display
+    - Performance trend analysis
+    - 15-minute rolling window statistics
 
 - **Exporters**
-  - JSONL exporter with automatic rotation
-  - Console exporter for development
-  - Configurable file retention and naming
+    - JSONL exporter with automatic rotation
+    - Console exporter for development
+    - Configurable file retention and naming
 
 - **Function Profiling**
-  - @profile_function decorator for sync/async functions
-  - Exception tracking and re-raising
-  - Nested span support
+    - @profile_function decorator for sync/async functions
+    - Exception tracking and re-raising
+    - Nested span support
 
 **Performance Metrics:**
 - Event creation: ≤15µs per event
@@ -48,32 +48,32 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 - Throughput: 100K+ events/second
 - Latency: Sub-millisecond collection overhead
 
-### [x] v0.2.0 — Additional Database Support (COMPLETED)
+### v0.2.0 — Additional Database Support (COMPLETED)
 **Released**: September 2025
 
 **Delivered Features:**
 - **MongoDB Support**
-  - PyMongo and Motor integration
-  - Command monitoring with comprehensive metrics extraction
-  - Query execution time tracking
-  - Collection and operation profiling
-  - Error tracking and failure analysis
+    - PyMongo and Motor integration
+    - Command monitoring with comprehensive metrics extraction
+    - Query execution time tracking
+    - Collection and operation profiling
+    - Error tracking and failure analysis
 
 - **Neo4j Integration**
-  - Cypher query profiling with session and transaction monitoring
-  - Graph traversal metrics and result statistics
-  - Both sync and async operation support
-  - Query analysis with parameter redaction
+    - Cypher query profiling with session and transaction monitoring
+    - Graph traversal metrics and result statistics
+    - Both sync and async operation support
+    - Query analysis with parameter redaction
 
 - **pyodbc Integration**
-  - Raw cursor wrapper for execute/executemany operations
-  - SQL monitoring with parameter redaction
-  - Multi-vendor database support (SQL Server, PostgreSQL, MySQL, etc.)
-  - Non-invasive instrumentation preserving cursor semantics
+    - Raw cursor wrapper for execute/executemany operations
+    - SQL monitoring with parameter redaction
+    - Multi-vendor database support (SQL Server, PostgreSQL, MySQL, etc.)
+    - Non-invasive instrumentation preserving cursor semantics
 
 - **Enhanced Runtime Context**
-  - Improved tracing support with parent span ID tracking
-  - Better integration with external tracing systems
+    - Improved tracing support with parent span ID tracking
+    - Better integration with external tracing systems
 
 **Performance Metrics:**
 - MongoDB command profiling: ≤15µs overhead
@@ -82,64 +82,64 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 - Memory overhead: ~100 bytes per database event
 - Throughput: 100K+ database events/second
 
-### [x] v0.3.0 — ASGI Framework Support (COMPLETED)
+### v0.3.0 — ASGI Framework Support (COMPLETED)
 **Released**: March 2026
 
 **Delivered Features:**
 - **ASGI Middleware**
-  - Generic `ProfilisASGIMiddleware` for Starlette and any ASGI framework
-  - Configurable sampling, route exclusions, and always-sample-errors
-  - Route template extraction from scope (e.g. path_format)
+    - Generic `ProfilisASGIMiddleware` for Starlette and any ASGI framework
+    - Configurable sampling, route exclusions, and always-sample-errors
+    - Route template extraction from scope (e.g. path_format)
 
 - **FastAPI Integration**
-  - `instrument_fastapi()` registers ASGI middleware with FastAPI apps
-  - Automatic request/response profiling and route detection
-  - `make_ui_router()` for built-in dashboard (metrics.json, errors.json, HTML)
+    - `instrument_fastapi()` registers ASGI middleware with FastAPI apps
+    - Automatic request/response profiling and route detection
+    - `make_ui_router()` for built-in dashboard (metrics.json, errors.json, HTML)
 
 - **Sanic Integration**
-  - `instrument_sanic_app()` with native request/response/exception middleware
-  - `make_ui_blueprint()` for built-in dashboard
-  - Optional ASGI app mounting (best-effort by Sanic version)
+    - `instrument_sanic_app()` with native request/response/exception middleware
+    - `make_ui_blueprint()` for built-in dashboard
+    - Optional ASGI app mounting (best-effort by Sanic version)
 
 **Enhancements:**
 - Improved async performance and error handling in ASGI/Sanic contexts
 
-### [x] v0.4.0 — Sampling, Prometheus & Resilience (COMPLETED)
+### v0.4.0 — Sampling, Prometheus & Resilience (COMPLETED)
 **Released**: March 2026
 
 **Delivered Features:**
 - **Sampling Policies**
-  - Global `sample_rate` (0.0–1.0) for ASGI and Sanic
-  - Per-route overrides and route excludes (prefix or regex, e.g. `re:^/static/`)
-  - Always sample 5xx responses and exceptions
-  - Seedable RNG / custom `rng` for deterministic tests
+    - Global `sample_rate` (0.0–1.0) for ASGI and Sanic
+    - Per-route overrides and route excludes (prefix or regex, e.g. `re:^/static/`)
+    - Always sample 5xx responses and exceptions
+    - Seedable RNG / custom `rng` for deterministic tests
 
 - **Prometheus Exporter**
-  - HTTP: `profilis_http_requests_total`, `profilis_http_request_duration_seconds` (histogram)
-  - Functions: `profilis_function_calls_total`, `profilis_function_duration_seconds` (histogram)
-  - DB: `profilis_db_queries_total`, `profilis_db_query_duration_seconds` (histogram)
-  - Labels: service, instance, worker, route, status, function, db_vendor
-  - `/metrics` endpoint for Flask (`make_metrics_blueprint`) and ASGI (`make_asgi_app`)
-  - Configurable histogram buckets
+    - HTTP: `profilis_http_requests_total`, `profilis_http_request_duration_seconds` (histogram)
+    - Functions: `profilis_function_calls_total`, `profilis_function_duration_seconds` (histogram)
+    - DB: `profilis_db_queries_total`, `profilis_db_query_duration_seconds` (histogram)
+    - Labels: service, instance, worker, route, status, function, db_vendor
+    - `/metrics` endpoint for Flask (`make_metrics_blueprint`) and ASGI (`make_asgi_app`)
+    - Configurable histogram buckets
 
 - **Reliability**
-  - Graceful shutdown: best-effort flush with timeout; never block exit
-  - JSONL exporter: disk-full fallback (no-op writer + warn once)
-  - Health metrics: `profilis_events_dropped_total`, `profilis_queue_depth` via `register_collector_health_metrics()`
+    - Graceful shutdown: best-effort flush with timeout; never block exit
+    - JSONL exporter: disk-full fallback (no-op writer + warn once)
+    - Health metrics: `profilis_events_dropped_total`, `profilis_queue_depth` via `register_collector_health_metrics()`
 
-### [x] v1.0.0 — Production Ready (COMPLETED)
+### v1.0.0 — Production Ready (COMPLETED)
 **Target**: March 2026
 
 **Planned Features:**
 - **Comprehensive Benchmarks**
-  - Performance regression testing
-  - Load testing scenarios
-  - Comparison with alternatives
+    - Performance regression testing
+    - Load testing scenarios
+    - Comparison with alternatives
 
 - **Production Documentation**
-  - Deployment guides
-  - Monitoring best practices
-  - Troubleshooting guides
+    - Deployment guides
+    - Monitoring best practices
+    - Troubleshooting guides
 
 **Enhancements:**
 - Production validation
