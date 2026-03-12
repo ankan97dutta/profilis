@@ -41,6 +41,13 @@ markdown_extensions:
 plugins:
   - search
   - mermaid2
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: false
+            docstring_style: google
 nav:
   - Home: index.md
   - Overview:
@@ -53,6 +60,8 @@ nav:
       - Configuration: guides/configuration.md
       - Installation: guides/installation.md
       - Benchmarks: guides/benchmarks.md
+      - Security: guides/security.md
+      - Troubleshooting: guides/troubleshooting.md
   - Adapters:
       - Flask: adapters/flask.md
       - FastAPI: adapters/fastapi.md
@@ -65,6 +74,13 @@ nav:
   - Exporters:
       - JSONL: exporters/jsonl.md
       - Prometheus: exporters/prometheus.md
+  - API reference:
+      - api/index.md
+      - Core: api/core.md
+      - Adapters: api/adapters.md
+      - Databases: api/databases.md
+      - Exporters: api/exporters.md
+      - Runtime: api/runtime.md
   - UI:
       - UI: ui/ui.md
   - Meta:
