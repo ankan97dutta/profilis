@@ -52,6 +52,7 @@ nav:
       - Getting started: guides/getting-started.md
       - Configuration: guides/configuration.md
       - Installation: guides/installation.md
+      - Benchmarks: guides/benchmarks.md
   - Adapters:
       - Flask: adapters/flask.md
       - FastAPI: adapters/fastapi.md
