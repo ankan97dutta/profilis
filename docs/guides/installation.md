@@ -281,7 +281,7 @@ For production deployments:
 
 ```bash
 # Install with specific versions for stability
-pip install profilis[flask,sqlalchemy]==0.4.0
+pip install profilis[flask,sqlalchemy]==1.0.0
 
 # Or use requirements file with pinned versions
 pip install -r requirements-production.txt

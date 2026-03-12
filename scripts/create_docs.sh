@@ -356,4 +356,4 @@ cat > docs/meta/code-of-conduct.md <<'EOF'
 Be respectful. Harassment or discrimination is not tolerated.
 EOF
 
-echo "✅ docs/ scaffolded"
+echo "[ok] docs/ scaffolded"

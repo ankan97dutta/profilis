@@ -2,7 +2,7 @@
 
 # Profilis
 
-> A high performance, non-blocking profiler for Python web applications.
+> A high-performance, non-blocking profiler for Python web applications.
 
 [![Docs](https://github.com/ankan97dutta/profilis/actions/workflows/docs.yml/badge.svg)](https://ankan97dutta.github.io/profilis/)
 [![CI](https://github.com/ankan97dutta/profilis/actions/workflows/ci.yml/badge.svg)](https://github.com/ankan97dutta/profilis/actions/workflows/ci.yml)
@@ -11,31 +11,60 @@
 
 ## Overview
 
-Profilis provides drop-in observability across APIs, functions, and database queries with minimal performance impact. It's designed to be:
+Profilis gives you drop-in observability across APIs, functions, and database queries with minimal
+performance impact.
 
-- **Non blocking**: Async collection with configurable batching and backpressure handling
-- **Framework agnostic**: Flask, FastAPI, and Sanic with optional ASGI middleware for any ASGI app
-- **Database aware**: SQLAlchemy (sync & async), MongoDB (PyMongo), Neo4j, and pyodbc
-- **Production ready**: Configurable sampling, error tracking, and multiple export formats
+- **Non-blocking**: async collection with configurable batching and backpressure handling
+- **Framework-agnostic**: Flask, FastAPI, and Sanic (plus optional ASGI middleware for any ASGI app)
+- **Database-aware**: SQLAlchemy (sync and async), MongoDB (PyMongo), Neo4j, and pyodbc
+- **Production-ready**: configurable sampling, error tracking, and export formats
 
 <img width="1126" height="642" alt="Screenshot 2025-09-01 at 12 38 50 PM" src="https://github.com/user-attachments/assets/7c9d541b-4984-4575-92fb-8c0ec48dff55" />
 
-## Star This Repository
+## TL;DR
 
-If you find Profilis helpful for your projects, please consider giving it a star! It helps others discover this tool and motivates continued development.
+Install:
 
-[![GitHub stars](https://img.shields.io/github/stars/ankan97dutta/profilis?style=social)](https://github.com/ankan97dutta/profilis)
+```bash
+pip install profilis
+```
+
+Pick a framework integration:
+
+- Flask: `pip install profilis[flask]`
+- FastAPI: `pip install profilis[fastapi]`
+- Sanic: `pip install profilis[sanic]`
+- Prometheus exporter: `pip install profilis[prometheus]`
+- Performance extras: `pip install profilis[perf]`
+- All integrations: `pip install profilis[all]`
+
+Then jump to [Quick Start](#quick-start).
+
+## Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Advanced Usage](#advanced-usage)
+- [Configuration](#configuration)
+- [Exporters](#exporters)
+- [Performance Characteristics](#performance-characteristics)
+- [Documentation](#documentation)
+- [Development](#development)
+- [Roadmap](#roadmap)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
-- **Request Profiling**: Automatic HTTP request/response timing and status tracking
-- **Frameworks**: Flask, FastAPI (ASGI middleware), and Sanic with built-in dashboard (Flask blueprint, FastAPI router, Sanic blueprint)
-- **Function Profiling**: Decorator-based function timing with exception tracking
-- **Database Instrumentation**: SQLAlchemy (sync & async), MongoDB (PyMongo), Neo4j, pyodbc with query/command monitoring
-- **Built-in UI**: Real-time dashboard for monitoring and debugging
-- **Multiple Exporters**: JSONL (with rotation), Console
-- **Runtime Context**: Distributed tracing with trace/span ID management
-- **Configurable Sampling**: Control data collection volume (Flask, ASGI, Sanic)
+- **Request profiling**: automatic HTTP request/response timing and status tracking
+- **Frameworks**: Flask, FastAPI (ASGI middleware), and Sanic, with a built-in dashboard (Flask blueprint, FastAPI router, Sanic blueprint)
+- **Function profiling**: decorator-based function timing with exception tracking
+- **Database instrumentation**: SQLAlchemy (sync and async), MongoDB (PyMongo), Neo4j, pyodbc with query/command monitoring
+- **Built-in UI**: real-time dashboard for monitoring and debugging
+- **Exporters**: JSONL (with rotation), Console (Prometheus is supported; see docs)
+- **Runtime context**: trace/span ID management
+- **Configurable sampling**: control data collection volume (Flask, ASGI, Sanic)
 
 
 ## Installation
@@ -73,63 +102,73 @@ pip install -r requirements-minimal.txt
 # Flask integration
 pip install -r requirements-flask.txt
 
+# FastAPI integration
+pip install -r requirements-fastapi.txt
+
 # SQLAlchemy integration
 pip install -r requirements-sqlalchemy.txt
+
+# MongoDB integration
+pip install -r requirements-mongo.txt
 
 # All integrations
 pip install -r requirements-all.txt
 ```
 
-### Option 3: Manual installation
+### Option 3: Fine-grained installs
 
-```bash
-# Core dependencies
-pip install typing_extensions>=4.0
-
-# Flask support
-pip install flask[async]>=3.0
-
-# FastAPI support
-pip install fastapi>=0.110 starlette>=0.37 httpx>=0.24.0
-
-# Sanic support
-pip install sanic>=23.0
-
-# SQLAlchemy support
-pip install sqlalchemy>=2.0 aiosqlite greenlet
-
-# Performance optimization
-pip install orjson>=3.8
-```
+If you need fully explicit dependency control, install your framework/DB libs directly and only
+install the Profilis extras you need. The authoritative list of extras lives in `pyproject.toml`
+under `[project.optional-dependencies]`.
 
 ## Quick Start
+
+### Core concepts (one-minute mental model)
+
+- **Collector**: `AsyncCollector` buffers events off the request hot path and flushes them in batches.
+- **Emitter**: `Emitter` creates tiny `dict` events (REQ/FN/DB) and enqueues them to a collector.
+- **Exporter (sink)**: a callable that consumes batches of events (e.g. JSONL, Console, Prometheus).
+- **UI**: a small HTTP dashboard that reads from a `StatsStore` (which you populate).
 
 ### Flask Integration
 
 ```python
 from flask import Flask
 from profilis.flask.adapter import ProfilisFlask
+from profilis.flask.ui import make_ui_blueprint
+from profilis.core.stats import StatsStore
 from profilis.exporters.jsonl import JSONLExporter
 from profilis.core.async_collector import AsyncCollector
 
-# Setup exporter and collector
-exporter = JSONLExporter(dir="./logs", rotate_bytes=1024*1024, rotate_secs=3600)
-collector = AsyncCollector(exporter, queue_size=2048, batch_max=128, flush_interval=0.1)
+stats = StatsStore()
+jsonl = JSONLExporter(dir="./logs", rotate_bytes=1024*1024, rotate_secs=3600)
 
-# Create Flask app and integrate Profilis
+def sink(batch: list[dict]) -> None:
+    # Persist events
+    jsonl(batch)
+    # Feed the UI stats store (record request timing + errors)
+    for ev in batch:
+        if ev.get("kind") == "REQ":
+            status = int(ev.get("status", 0) or 0)
+            stats.record(int(ev.get("dur_ns", 0) or 0), error=status >= 500)
+
+collector = AsyncCollector(sink, queue_size=2048, batch_max=128, flush_interval=0.1)
+
 app = Flask(__name__)
-profilis = ProfilisFlask(
+ProfilisFlask(
     app,
     collector=collector,
     exclude_routes=["/health", "/metrics"],
     sample=1.0  # 100% sampling
 )
 
+app.register_blueprint(make_ui_blueprint(stats, ui_prefix="/_profilis"))
+
 @app.route('/api/users')
 def get_users():
     return {"users": ["alice", "bob"]}
 
-# Visit /_profilis for the dashboard (if you mount the UI blueprint)
+# Visit http://localhost:5000/_profilis
 if __name__ == "__main__":
     app.run(debug=True)
 ```
@@ -140,15 +179,24 @@ if __name__ == "__main__":
 from fastapi import FastAPI
 from profilis.fastapi.adapter import instrument_fastapi
 from profilis.fastapi.ui import make_ui_router
+from profilis.core.stats import StatsStore
 from profilis.exporters.jsonl import JSONLExporter
 from profilis.core.async_collector import AsyncCollector
 from profilis.core.emitter import Emitter
-from profilis.core.stats import StatsStore
 
-exporter = JSONLExporter(dir="./logs", rotate_bytes=1024*1024, rotate_secs=3600)
-collector = AsyncCollector(exporter, queue_size=2048, batch_max=128, flush_interval=0.1)
-emitter = Emitter(collector)
 stats = StatsStore()
+jsonl = JSONLExporter(dir="./logs", rotate_bytes=1024*1024, rotate_secs=3600)
+
+def sink(batch: list[dict]) -> None:
+    jsonl(batch)
+    for ev in batch:
+        # FastAPI/ASGI emits kind="HTTP"
+        if ev.get("kind") == "HTTP":
+            status = int(ev.get("status", 0) or 0)
+            stats.record(int(ev.get("dur_ns", 0) or 0), error=status >= 500)
+
+collector = AsyncCollector(sink, queue_size=2048, batch_max=128, flush_interval=0.1)
+emitter = Emitter(collector)
 
 app = FastAPI()
 instrument_fastapi(app, emitter, route_excludes=["/profilis"])
@@ -160,6 +208,35 @@ async def get_users():
 
 # Run with: uvicorn your_module:app --reload
 # Visit http://localhost:8000/profilis for the dashboard
+```
+
+### Sanic Integration
+
+```python
+from sanic import Sanic
+from profilis.sanic.adapter import SanicConfig, instrument_sanic_app
+from profilis.sanic.ui import make_ui_blueprint
+from profilis.core.async_collector import AsyncCollector
+from profilis.core.emitter import Emitter
+from profilis.core.stats import StatsStore
+from profilis.exporters.console import ConsoleExporter
+
+app = Sanic("app")
+stats = StatsStore()
+console = ConsoleExporter(pretty=True)
+
+def sink(batch: list[dict]) -> None:
+    console(batch)
+    for ev in batch:
+        if ev.get("kind") == "HTTP":
+            status = int(ev.get("status", 0) or 0)
+            stats.record(int(ev.get("dur_ns", 0) or 0), error=status >= 500)
+
+collector = AsyncCollector(sink)
+emitter = Emitter(collector)
+
+instrument_sanic_app(app, emitter, SanicConfig(route_excludes=["/profilis"]))
+app.blueprint(make_ui_blueprint(stats, ui_prefix="/profilis"))
 ```
 
 ### Function Profiling

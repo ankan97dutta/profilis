@@ -4,7 +4,7 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 
 ## Version Status
 
-### ✅ v0.1.0 — Core + Flask + SQLAlchemy + UI (COMPLETED)
+### [x] v0.1.0 — Core + Flask + SQLAlchemy + UI (COMPLETED)
 **Released**: September 2025
 
 **Delivered Features:**
@@ -48,7 +48,7 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 - Throughput: 100K+ events/second
 - Latency: Sub-millisecond collection overhead
 
-### ✅ v0.2.0 — Additional Database Support (COMPLETED)
+### [x] v0.2.0 — Additional Database Support (COMPLETED)
 **Released**: September 2025
 
 **Delivered Features:**
@@ -82,7 +82,7 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 - Memory overhead: ~100 bytes per database event
 - Throughput: 100K+ database events/second
 
-### ✅ v0.3.0 — ASGI Framework Support (COMPLETED)
+### [x] v0.3.0 — ASGI Framework Support (COMPLETED)
 **Released**: March 2026
 
 **Delivered Features:**
@@ -104,7 +104,7 @@ See GitHub Project: *Profilis – v0 Roadmap*.
 **Enhancements:**
 - Improved async performance and error handling in ASGI/Sanic contexts
 
-### ✅ v0.4.0 — Sampling, Prometheus & Resilience (COMPLETED)
+### [x] v0.4.0 — Sampling, Prometheus & Resilience (COMPLETED)
 **Released**: March 2026
 
 **Delivered Features:**
@@ -127,8 +127,8 @@ See GitHub Project: *Profilis – v0 Roadmap*.
   - JSONL exporter: disk-full fallback (no-op writer + warn once)
   - Health metrics: `profilis_events_dropped_total`, `profilis_queue_depth` via `register_collector_health_metrics()`
 
-### 🔄 v1.0.0 — Production Ready (PLANNED)
-**Target**: Q2 2026
+### [x] v1.0.0 — Production Ready (COMPLETED)
+**Target**: March 2026
 
 **Planned Features:**
 - **Comprehensive Benchmarks**
@@ -141,58 +141,11 @@ See GitHub Project: *Profilis – v0 Roadmap*.
   - Monitoring best practices
   - Troubleshooting guides
 
-- **Enterprise Features**
-  - Multi-tenant support
-  - Advanced security features
-  - Compliance documentation
-
 **Enhancements:**
 - Production validation
 - Community feedback integration
 - Long-term support commitment
 
-## Development Priorities
-
-### Immediate (v0.4.0 → v0.5.0)
-1. **Enhanced Exporters & Observability**
-   - OTLP exporter
-   - Grafana dashboard templates for Prometheus metrics
-
-2. **Database Integrations**
-   - Enhanced MongoDB, Neo4j, and pyodbc features
-   - Additional database driver support
-
-3. **Performance Optimization**
-   - Optimize AsyncCollector performance
-   - Reduce memory overhead
-   - Improve batching efficiency
-
-### Short-term (v0.4.0 → v1.0.0)
-1. **Advanced Features**
-   - Distributed tracing
-   - Correlation IDs
-   - Advanced sampling
-
-2. **Testing & Quality**
-   - Expand test coverage
-   - Performance benchmarking
-   - Integration testing
-
-### Long-term (v0.4.0 → v1.0.0)
-1. **Production Features**
-   - High availability
-   - Scalability improvements
-   - Enterprise features
-
-2. **Ecosystem Integration**
-   - Third-party integrations
-   - Plugin system
-   - Community contributions
-
-3. **Documentation & Support**
-   - Comprehensive guides
-   - Video tutorials
-   - Community support
 
 ## Contributing to the Roadmap
 
