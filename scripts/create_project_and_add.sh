@@ -37,33 +37,33 @@ fi
 # ---- Create or use project ----
 if [ -n "${EXIST_ID:-}" ]; then
   PROJECT_ID="$EXIST_ID"
-  echo "ℹ️  Using existing project: $PROJECT_TITLE"
+  echo "[info] Using existing project: $PROJECT_TITLE"
 else
   PROJECT_ID="$(gh api graphql -f query='mutation($owner:ID!,$title:String!){ createProjectV2(input:{ownerId:$owner,title:$title}){ projectV2 { id } } }' -f owner="$OWNER_ID" -f title="$PROJECT_TITLE" --jq '.data.createProjectV2.projectV2.id')"
-  echo "✅ Created project: $PROJECT_TITLE"
+  echo "[ok] Created project: $PROJECT_TITLE"
 fi
 
 # ---- Gather issues by milestone or label ----
 if [[ -n "$MS_FILTER" ]]; then
-  echo "🔎 Selecting open issues in milestone: $MS_FILTER"
+  echo "[search] Selecting open issues in milestone: $MS_FILTER"
   ISSUES=$(gh issue list -R "$GH_OWNER/$GH_REPO" --state open --milestone "$MS_FILTER" \
            --json number,id --jq '.[] | [.number, .id] | @tsv')
 else
-  echo "🔎 Selecting open issues with label: $LBL_FILTER"
+  echo "[search] Selecting open issues with label: $LBL_FILTER"
   ISSUES=$(gh issue list -R "$GH_OWNER/$GH_REPO" --state open --label "$LBL_FILTER" \
            --json number,id --jq '.[] | [.number, .id] | @tsv')
 fi
 
 if [ -z "$ISSUES" ]; then
-  echo "⚠️  No matching open issues found."
+  echo "[warn] No matching open issues found."
   exit 0
 fi
 
 # ---- Add each issue to the project ----
 while IFS=$'\t' read -r NUM NODE; do
-  echo "➕ Adding issue #$NUM to project…"
+  echo "[add] Adding issue #$NUM to project..."
   gh api graphql -f query='mutation($project:ID!,$content:ID!){ addProjectV2ItemById(input:{projectId:$project, contentId:$content}){ item { id } } }' \
     -f project="$PROJECT_ID" -f content="$NODE" >/dev/null
 done <<< "$ISSUES"
 
-echo "✅ Added issues to project: $PROJECT_TITLE"
+echo "[ok] Added issues to project: $PROJECT_TITLE"

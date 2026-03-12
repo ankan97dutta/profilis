@@ -27,13 +27,13 @@ create_ms() {
   local desc="$2"
   # If it already exists, skip
   if gh api "repos/${GH_OWNER}/${GH_REPO}/milestones" --jq '.[]|.title' 2>/dev/null | grep -Fxq "$title"; then
-    echo "ℹ️  Milestone exists: $title"
+    echo "[info] Milestone exists: $title"
     return 0
   fi
   # Create (open by default)
   gh api "repos/${GH_OWNER}/${GH_REPO}/milestones" \
     -f title="$title" -f state="open" -f description="$desc" >/dev/null
-  echo "✅ Created milestone: $title"
+  echo "[ok] Created milestone: $title"
 }
 
 # NOTE: The title below uses an EN–DASH (–). Keep it as-is (copy/paste).

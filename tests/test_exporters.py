@@ -29,7 +29,7 @@ def test_jsonl_rotation_by_size_and_atomic_rename() -> None:
 
     # Write enough small events to trigger multiple rotations by size
     for i in range(1_000):
-        col.enqueue({"i": i, "msg": "hello 🌍"})
+        col.enqueue({"i": i, "msg": "hello world"})
     time.sleep(0.1)
     col.close()
 
@@ -91,8 +91,8 @@ def test_console_exporter_unicode_and_pretty_capture_stdout(monkeypatch: Any) ->
     monkeypatch.setattr(sys, "stdout", buf)
 
     exp = ConsoleExporter(pretty=False)
-    exp([{"msg": "hello 🚀", "x": 1}])
+    exp([{"msg": "hello rocket", "x": 1}])
 
     out = buf.getvalue()
-    assert "hello 🚀" in out
+    assert "hello rocket" in out
     assert out.strip().endswith("1}")

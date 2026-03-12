@@ -21,7 +21,7 @@ if [[ -z "${GH_OWNER}" || -z "${GH_REPO}" ]]; then
   exit 2
 fi
 
-echo "🔍 Working with repository: ${GH_OWNER}/${GH_REPO}"
+echo "[info] Working with repository: ${GH_OWNER}/${GH_REPO}"
 
 # Helper: get milestone ID by title
 get_milestone_id() {
@@ -36,16 +36,16 @@ assign_to_milestone() {
   local milestone_title="$3"
 
   if [[ -n "$milestone_number" ]]; then
-    echo "➕ Assigning issue #$issue_number to milestone: $milestone_title"
+    echo "[add] Assigning issue #$issue_number to milestone: $milestone_title"
     gh api "repos/${GH_OWNER}/${GH_REPO}/issues/$issue_number" \
       -f milestone="$milestone_number" >/dev/null
   else
-    echo "⚠️  Milestone not found: $milestone_title"
+    echo "[warn] Milestone not found: $milestone_title"
   fi
 }
 
 # Get all open issues
-echo "📋 Fetching open issues..."
+echo "[info] Fetching open issues..."
 ISSUES=$(gh issue list --state open --json number,title,labels --limit 100)
 
 # Define milestone mapping based on issue labels and content
@@ -113,9 +113,9 @@ map_issue_to_milestone() {
 }
 
 # Process each issue
-echo "🏷️  Processing issues and assigning to milestones..."
+echo "[info] Processing issues and assigning to milestones..."
 echo "$ISSUES" | jq -r '.[] | "\(.number)|\(.title)|\([.labels[].name] | join(","))"' | while IFS='|' read -r number title labels; do
-  echo "📝 Issue #$number: $title"
+  echo "[issue] #$number: $title"
   echo "   Labels: $labels"
 
   # Map issue to milestone
@@ -129,7 +129,7 @@ echo "$ISSUES" | jq -r '.[] | "\(.number)|\(.title)|\([.labels[].name] | join(",
   echo "---"
 done
 
-echo "✅ Finished assigning issues to milestones!"
+echo "[ok] Finished assigning issues to milestones!"
 echo
-echo "📊 Summary of milestone assignments:"
+echo "[summary] Milestone assignments:"
 gh api "repos/${GH_OWNER}/${GH_REPO}/milestones" --jq '.[] | "\(.title): \(.open_issues) open issues"' 2>/dev/null || echo "No milestones found"
