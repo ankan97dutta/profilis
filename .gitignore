@@ -16,3 +16,8 @@ build/
 htmlcov/
 site/
 logs/
+
+# Bench outputs (generated)
+bench/results/*
+!bench/results/sample/
+!bench/results/sample/**

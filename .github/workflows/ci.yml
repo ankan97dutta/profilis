@@ -20,4 +20,7 @@ jobs:
       - name: Type check
         run: mypy src/ tests/ examples/
       - name: Tests
-        run: pytest
+        run: pytest -k "not microbench"
+      - name: Microbench (pytest-benchmark)
+        if: matrix.python-version == '3.12'
+        run: pytest -k microbench
