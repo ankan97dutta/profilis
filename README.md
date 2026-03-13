@@ -506,6 +506,11 @@ See [Profilis – v0 Roadmap Project](https://github.com/ankan97dutta/profilis/p
 
 [MIT](./LICENSE)
 
+## Suggested Readings
+
+- [Rethinking Profilis and Observability](https://blog.ankandutta.in/p/rethinking-profilis-and-observability)
+- [Why I Built Another Profiling Library](https://blog.ankandutta.in/p/why-i-built-another-profiling-library)
+
 ## Contact
 
 - **Email**: [connect@ankandutta.in](mailto:connect@ankandutta.in)
